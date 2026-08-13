@@ -1157,6 +1157,49 @@ body {
     border: 1px solid var(--accent-subtle);
 }
 
+/* Page Break Avoidance Guards for Multi-Page Printing & PDF Export */
+.resume-section,
+.preview-entry,
+.entry-header-row,
+.skill-progress-item,
+.sec-title {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+}
+
+/* Compact Density Mode for fitting long content on 1 Page */
+.resume-paper.density-compact {
+    padding: 24px 28px !important;
+}
+
+.resume-paper.density-compact .resume-section {
+    margin-bottom: 10px !important;
+}
+
+.resume-paper.density-compact .sec-title {
+    margin-bottom: 8px !important;
+    font-size: 0.95rem !important;
+    padding-bottom: 4px !important;
+}
+
+.resume-paper.density-compact .preview-entries-list {
+    gap: 8px !important;
+}
+
+.resume-paper.density-compact .summary-text,
+.resume-paper.density-compact .entry-description {
+    font-size: 0.84rem !important;
+    line-height: 1.42 !important;
+}
+
+.resume-paper.density-compact .resume-header {
+    margin-bottom: 10px !important;
+}
+
+.resume-paper.density-compact .resume-accent-divider {
+    margin: 10px 0 !important;
+}
+
 /* Hide empty sections */
 .resume-section.is-hidden {
     display: none !important;
@@ -1187,7 +1230,12 @@ body {
 @media print {
     @page {
         size: A4 portrait;
-        margin: 12mm 15mm;
+        margin: 0;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
     body {
@@ -1199,6 +1247,8 @@ body {
 
     .no-print, 
     .app-header, 
+    .header-top-row,
+    .header-sub-bar,
     .editor-sidebar, 
     .preview-toolbar {
         display: none !important;
@@ -1219,33 +1269,15 @@ body {
 
     .a4-paper-wrapper {
         display: block !important;
+        transform: none !important;
+        margin: 0 !important;
     }
 
     .resume-paper {
-        width: 100% !important;
-        min-height: auto !important;
+        width: 210mm !important;
+        min-height: 297mm !important;
         box-shadow: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
         border-radius: 0 !important;
-    }
-
-    .resume-accent-divider {
-        background: var(--accent-color) !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-
-    .skill-chip,
-    .sec-title,
-    .sec-icon,
-    .skill-progress-fill,
-    .resume-paper.layout-timeline-yellow,
-    .resume-paper.layout-timeline-yellow #resumeHeader,
-    .resume-paper.layout-timeline-yellow .resume-sidebar-zone,
-    .resume-paper.layout-creative-navy .sec-title,
-    .contact-item i {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
     }
 }

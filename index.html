@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyResume - Free Modern Resume & CV Builder</title>
-    <meta name="description" content="Build clean, ATS-friendly professional resumes in minutes with real-time live preview, multiple custom templates, and instant PDF download. 100% free & open-source.">
+    <meta name="description"
+        content="Build clean, ATS-friendly professional resumes in minutes with real-time live preview, multiple custom templates, and instant PDF download. 100% free & open-source.">
     <meta name="keywords" content="resume builder, cv creator, pdf resume, free resume template, modern resume">
     <meta name="author" content="EasyResume">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="EasyResume - Free Modern Resume & CV Builder">
-    <meta property="og:description" content="Build clean, ATS-friendly professional resumes with real-time live preview and instant PDF export.">
+    <meta property="og:description"
+        content="Build clean, ATS-friendly professional resumes with real-time live preview and instant PDF export.">
     <meta property="og:image" content="https://raw.githubusercontent.com/easyresume/assets/main/preview.png">
 
     <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- html2pdf for Direct 1-Click PDF Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="theme-blue font-inter">
-    <!-- Top Header Navigation Bar -->
-    <header class="app-header no-print">
+
+    <!-- Main Top Row -->
+    <div class="header-top-row">
         <div class="header-brand">
             <div class="logo-icon"><i data-lucide="file-text"></i></div>
             <div class="logo-text">
@@ -36,79 +46,87 @@
             </div>
         </div>
 
-        <!-- Main Top Row -->
-        <div class="header-top-row">
-            <div class="header-brand">
-                <div class="logo-icon"><i data-lucide="file-text"></i></div>
-                <div class="logo-text">
-                    <h1>EasyResume</h1>
-                    <span class="badge">Simple & Fast</span>
+        <!-- Header Action Controls -->
+        <div class="header-actions">
+            <button type="button" id="customizeToggleBtn" class="btn btn-secondary"
+                title="Customize theme color, format template & fonts">
+                <i data-lucide="sliders"></i> <span>Customize</span> <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            <button id="clearBtn" class="btn btn-outline" title="Clear form">
+                <i data-lucide="trash-2"></i> <span>Clear</span>
+            </button>
+            <button id="exportJsonBtn" class="btn btn-icon" title="Backup/Export JSON"
+                aria-label="Backup or Export JSON">
+                <i data-lucide="download"></i>
+            </button>
+            <label for="importJsonInput" class="btn btn-icon" title="Import JSON Backup"
+                aria-label="Import JSON Backup">
+                <i data-lucide="upload"></i>
+                <input type="file" id="importJsonInput" accept=".json" style="display:none;"
+                    aria-label="Choose JSON file to import">
+            </label>
+            <button id="printBtn" class="btn btn-primary" title="Print or Save as PDF">
+                <i data-lucide="printer"></i> <span>Download PDF</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Customization Bottom Sub-Bar (Expands directly underneath top bar when Customize is clicked) -->
+    <div class="header-sub-bar" id="customizeSubBar">
+        <div class="sub-bar-inner">
+            <div class="control-group">
+                <label><i data-lucide="palette"></i> Theme Color</label>
+                <div class="color-picker-wrapper">
+                    <button class="color-dot active" data-color="#3b82f6" style="background-color: #3b82f6;"
+                        title="Blue"></button>
+                    <button class="color-dot" data-color="#10b981" style="background-color: #10b981;"
+                        title="Emerald"></button>
+                    <button class="color-dot" data-color="#6366f1" style="background-color: #6366f1;"
+                        title="Indigo"></button>
+                    <button class="color-dot" data-color="#ec4899" style="background-color: #ec4899;"
+                        title="Rose"></button>
+                    <button class="color-dot" data-color="#8b5cf6" style="background-color: #8b5cf6;"
+                        title="Purple"></button>
+                    <button class="color-dot" data-color="#0f172a" style="background-color: #0f172a;"
+                        title="Dark Charcoal"></button>
                 </div>
             </div>
 
-            <!-- Header Action Controls -->
-            <div class="header-actions">
-                <button type="button" id="customizeToggleBtn" class="btn btn-secondary" title="Customize theme color, format template & fonts">
-                    <i data-lucide="sliders"></i> <span>Customize</span> <i data-lucide="chevron-down" class="chevron"></i>
-                </button>
-                <button id="clearBtn" class="btn btn-outline" title="Clear form">
-                    <i data-lucide="trash-2"></i> <span>Clear</span>
-                </button>
-                <button id="exportJsonBtn" class="btn btn-icon" title="Backup/Export JSON" aria-label="Backup or Export JSON">
-                    <i data-lucide="download"></i>
-                </button>
-                <label for="importJsonInput" class="btn btn-icon" title="Import JSON Backup" aria-label="Import JSON Backup">
-                    <i data-lucide="upload"></i>
-                    <input type="file" id="importJsonInput" accept=".json" style="display:none;" aria-label="Choose JSON file to import">
-                </label>
-                <button id="printBtn" class="btn btn-primary" title="Print or Save as PDF">
-                    <i data-lucide="printer"></i> <span>Download PDF</span>
+            <div class="control-group">
+                <label for="templateSelect"><i data-lucide="layout"></i> Format Template</label>
+                <select id="templateSelect" class="styled-select">
+                    <option value="layout-modern">Modern Clean (Single-Column)</option>
+                    <option value="layout-twocol">Split Two-Column (Sidebar Layout)</option>
+                    <option value="layout-executive">Executive Classic (Formal Serif)</option>
+                    <option value="layout-creative-navy">Creative Executive (Navy & Circle Photo)</option>
+                    <option value="layout-timeline-yellow">Yellow Frame Timeline (Banner Header & Nodes)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="fontSelect"><i data-lucide="type"></i> Typography</label>
+                <select id="fontSelect" class="styled-select">
+                    <option value="font-inter">Modern (Inter)</option>
+                    <option value="font-outfit">Clean Sans (Outfit)</option>
+                    <option value="font-lora">Classic Serif (Lora)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="densitySelect"><i data-lucide="maximize-2"></i> Page Spacing</label>
+                <select id="densitySelect" class="styled-select">
+                    <option value="density-normal">Normal Spacing</option>
+                    <option value="density-compact">Compact (Fit 1 Page)</option>
+                </select>
+            </div>
+
+            <div class="control-group action-group">
+                <button id="loadSampleBtn" class="btn btn-secondary btn-sm" title="Load sample resume info">
+                    <i data-lucide="sparkles"></i> <span>Sample Data</span>
                 </button>
             </div>
         </div>
-
-        <!-- Customization Bottom Sub-Bar (Expands directly underneath top bar when Customize is clicked) -->
-        <div class="header-sub-bar" id="customizeSubBar">
-            <div class="sub-bar-inner">
-                <div class="control-group">
-                    <label><i data-lucide="palette"></i> Theme Color</label>
-                    <div class="color-picker-wrapper">
-                        <button class="color-dot active" data-color="#3b82f6" style="background-color: #3b82f6;" title="Blue"></button>
-                        <button class="color-dot" data-color="#10b981" style="background-color: #10b981;" title="Emerald"></button>
-                        <button class="color-dot" data-color="#6366f1" style="background-color: #6366f1;" title="Indigo"></button>
-                        <button class="color-dot" data-color="#ec4899" style="background-color: #ec4899;" title="Rose"></button>
-                        <button class="color-dot" data-color="#8b5cf6" style="background-color: #8b5cf6;" title="Purple"></button>
-                        <button class="color-dot" data-color="#0f172a" style="background-color: #0f172a;" title="Dark Charcoal"></button>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label for="templateSelect"><i data-lucide="layout"></i> Format Template</label>
-                    <select id="templateSelect" class="styled-select">
-                        <option value="layout-modern">Modern Clean (Single-Column)</option>
-                        <option value="layout-twocol">Split Two-Column (Sidebar Layout)</option>
-                        <option value="layout-executive">Executive Classic (Formal Serif)</option>
-                        <option value="layout-creative-navy">Creative Executive (Navy & Circle Photo)</option>
-                        <option value="layout-timeline-yellow">Yellow Frame Timeline (Banner Header & Nodes)</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="fontSelect"><i data-lucide="type"></i> Typography</label>
-                    <select id="fontSelect" class="styled-select">
-                        <option value="font-inter">Modern (Inter)</option>
-                        <option value="font-outfit">Clean Sans (Outfit)</option>
-                        <option value="font-lora">Classic Serif (Lora)</option>
-                    </select>
-                </div>
-
-                <div class="control-group action-group">
-                    <button id="loadSampleBtn" class="btn btn-secondary btn-sm" title="Load sample resume info">
-                        <i data-lucide="sparkles"></i> <span>Sample Data</span>
-                    </button>
-                </div>
-            </div>
-        </div>
+    </div>
     </header>
 
     <!-- Main Container: Editor Panel (Left) & Live Preview Canvas (Right) -->
@@ -116,7 +134,7 @@
         <!-- LEFT SIDEBAR: EDITOR FORM -->
         <aside class="editor-sidebar no-print">
             <div class="sidebar-inner">
-                
+
                 <!-- Section 1: Personal Information -->
                 <details class="editor-section" open>
                     <summary class="section-header">
@@ -136,7 +154,8 @@
                                         <i data-lucide="upload"></i> Upload Photo
                                         <input type="file" id="input-photo" accept="image/*" style="display:none;">
                                     </label>
-                                    <button type="button" id="removePhotoBtn" class="btn btn-outline btn-sm" style="display:none;">
+                                    <button type="button" id="removePhotoBtn" class="btn btn-outline btn-sm"
+                                        style="display:none;">
                                         <i data-lucide="trash-2"></i> Remove
                                     </button>
                                 </div>
@@ -186,7 +205,8 @@
                     <div class="section-body">
                         <div class="form-group">
                             <label>Short Bio / Professional Summary</label>
-                            <textarea id="input-summary" rows="4" placeholder="Brief statement highlighting your expertise, key achievements, and career goals..."></textarea>
+                            <textarea id="input-summary" rows="4"
+                                placeholder="Brief statement highlighting your expertise, key achievements, and career goals..."></textarea>
                         </div>
                     </div>
                 </details>
@@ -228,7 +248,8 @@
                     <div class="section-body">
                         <div class="form-group">
                             <label>Key Skills (comma separated)</label>
-                            <textarea id="input-skills" rows="3" placeholder="e.g. JavaScript, React, Node.js, Python, AWS, UI/UX Design, Project Management"></textarea>
+                            <textarea id="input-skills" rows="3"
+                                placeholder="e.g. JavaScript, React, Node.js, Python, AWS, UI/UX Design, Project Management"></textarea>
                             <span class="field-hint">Separate skills with commas for automatic tag formatting.</span>
                         </div>
                     </div>
@@ -266,21 +287,29 @@
                         <div class="header-main-layout" id="headerMainLayout">
                             <div class="preview-avatar-wrapper" id="prev-avatar-wrap" style="display:none;">
                                 <img id="prev-avatar" src="" alt="Profile Photo" class="preview-avatar-img">
-                                <div class="default-avatar-placeholder" id="default-avatar-icon" style="display:none;"><i data-lucide="user"></i></div>
+                                <div class="default-avatar-placeholder" id="default-avatar-icon" style="display:none;">
+                                    <i data-lucide="user"></i>
+                                </div>
                             </div>
                             <div class="header-text-block" id="headerTextBlock">
                                 <h1 class="preview-name" id="prev-fullName">Alex Morgan</h1>
                                 <div class="preview-job-title" id="prev-jobTitle">Senior Software Engineer</div>
                             </div>
                         </div>
-                        
+
                         <div class="preview-contact-bar" id="prev-contactBar">
-                            <span class="contact-item" id="prev-email-wrap"><i data-lucide="mail"></i> <span id="prev-email">alex@example.com</span></span>
-                            <span class="contact-item" id="prev-phone-wrap"><i data-lucide="phone"></i> <span id="prev-phone">+1 (555) 019-2834</span></span>
-                            <span class="contact-item" id="prev-location-wrap"><i data-lucide="map-pin"></i> <span id="prev-location">San Francisco, CA</span></span>
-                            <span class="contact-item" id="prev-website-wrap"><i data-lucide="globe"></i> <span id="prev-website">alexmorgan.dev</span></span>
-                            <span class="contact-item" id="prev-linkedin-wrap"><i data-lucide="linkedin"></i> <span id="prev-linkedin">linkedin.in/alexmorgan</span></span>
-                            <span class="contact-item" id="prev-github-wrap"><i data-lucide="github"></i> <span id="prev-github">github.com/alexmorgan</span></span>
+                            <span class="contact-item" id="prev-email-wrap"><i data-lucide="mail"></i> <span
+                                    id="prev-email">abcd@example.com</span></span>
+                            <span class="contact-item" id="prev-phone-wrap"><i data-lucide="phone"></i> <span
+                                    id="prev-phone">1234567890</span></span>
+                            <span class="contact-item" id="prev-location-wrap"><i data-lucide="map-pin"></i> <span
+                                    id="prev-location">lucknow, India</span></span>
+                            <span class="contact-item" id="prev-website-wrap"><i data-lucide="globe"></i> <span
+                                    id="prev-website">abcd.dev</span></span>
+                            <span class="contact-item" id="prev-linkedin-wrap"><i data-lucide="linkedin"></i> <span
+                                    id="prev-linkedin">linkedin.in/abcd</span></span>
+                            <span class="contact-item" id="prev-github-wrap"><i data-lucide="github"></i> <span
+                                    id="prev-github">github.com/abcd</span></span>
                         </div>
                     </header>
 
@@ -289,35 +318,43 @@
                     <!-- Dynamic Layout Grid Wrapper -->
                     <div class="resume-body-layout" id="resumeBodyLayout">
                         <aside class="resume-sidebar-zone" id="resumeSidebarZone"></aside>
-                        
+
                         <main class="resume-main-zone" id="resumeMainZone">
                             <!-- Summary Section -->
                             <section class="resume-section" id="prev-sec-summary">
-                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="user"></i></span> <span class="sec-title-text">Profile Summary</span></h2>
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="user"></i></span> <span
+                                        class="sec-title-text">Profile Summary</span></h2>
                                 <p class="summary-text" id="prev-summary"></p>
                             </section>
 
                             <!-- Work Experience Section -->
                             <section class="resume-section" id="prev-sec-experience">
-                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="briefcase"></i></span> <span class="sec-title-text">Work Experience</span></h2>
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="briefcase"></i></span>
+                                    <span class="sec-title-text">Work Experience</span>
+                                </h2>
                                 <div id="prev-experience-list" class="preview-entries-list"></div>
                             </section>
 
                             <!-- Education Section -->
                             <section class="resume-section" id="prev-sec-education">
-                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="graduation-cap"></i></span> <span class="sec-title-text">Education</span></h2>
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="graduation-cap"></i></span>
+                                    <span class="sec-title-text">Education</span>
+                                </h2>
                                 <div id="prev-education-list" class="preview-entries-list"></div>
                             </section>
 
                             <!-- Skills Section -->
                             <section class="resume-section" id="prev-sec-skills">
-                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="code-2"></i></span> <span class="sec-title-text">Skills & Technical Expertise</span></h2>
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="code-2"></i></span> <span
+                                        class="sec-title-text">Skills & Technical Expertise</span></h2>
                                 <div id="prev-skills-container" class="skills-tags-cloud"></div>
                             </section>
 
                             <!-- Projects Section -->
                             <section class="resume-section" id="prev-sec-projects">
-                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="folder-git-2"></i></span> <span class="sec-title-text">Key Projects & Certifications</span></h2>
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="folder-git-2"></i></span>
+                                    <span class="sec-title-text">Key Projects & Certifications</span>
+                                </h2>
                                 <div id="prev-projects-list" class="preview-entries-list"></div>
                             </section>
                         </main>
@@ -334,4 +371,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

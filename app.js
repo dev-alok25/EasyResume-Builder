@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputSkills = document.getElementById('input-skills');
     const fontSelect = document.getElementById('fontSelect');
     const templateSelect = document.getElementById('templateSelect');
+    const densitySelect = document.getElementById('densitySelect');
 
     const expListContainer = document.getElementById('experience-list');
     const eduListContainer = document.getElementById('education-list');
@@ -161,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fontSelect.value = resumeState.font || 'font-inter';
         templateSelect.value = resumeState.template || 'layout-modern';
+        if (densitySelect) densitySelect.value = resumeState.density || 'density-normal';
         updateFont(resumeState.font || 'font-inter');
         updateThemeColor(resumeState.themeColor || '#3b82f6');
 
@@ -445,6 +447,14 @@ document.addEventListener('DOMContentLoaded', () => {
             renderPreview();
         });
 
+        if (densitySelect) {
+            densitySelect.addEventListener('change', (e) => {
+                resumeState.density = e.target.value;
+                saveToStorage();
+                renderPreview();
+            });
+        }
+
         // Customize Bottom Sub-Bar Toggle
         const customizeToggleBtn = document.getElementById('customizeToggleBtn');
         const customizeSubBar = document.getElementById('customizeSubBar');
@@ -530,8 +540,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        printBtn.addEventListener('click', () => {
-            window.print();
+        printBtn.addEventListener('click', async () => {
+            const originalHtml = printBtn.innerHTML;
+            printBtn.disabled = true;
+            printBtn.innerHTML = '<i data-lucide="loader"></i> <span>Generating PDF...</span>';
+            if (window.lucide) window.lucide.createIcons();
+
+            const paperElement = document.getElementById('resumePaper');
+            const fullName = (resumeState.personal && resumeState.personal.fullName) ? resumeState.personal.fullName.trim() : 'Resume';
+            const fileName = `${fullName.toLowerCase().replace(/\s+/g, '_')}_resume.pdf`;
+
+            try {
+                if (typeof html2pdf !== 'undefined') {
+                    const opt = {
+                        margin: 0,
+                        filename: fileName,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+                        html2canvas: { 
+                            scale: 2, 
+                            useCORS: true, 
+                            logging: false,
+                            scrollX: 0,
+                            scrollY: 0
+                        },
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    };
+                    await html2pdf().set(opt).from(paperElement).save();
+                } else {
+                    window.print();
+                }
+            } catch (err) {
+                console.error('PDF generation error, falling back to window.print():', err);
+                window.print();
+            } finally {
+                printBtn.disabled = false;
+                printBtn.innerHTML = originalHtml;
+                if (window.lucide) window.lucide.createIcons();
+            }
         });
 
         exportJsonBtn.addEventListener('click', () => {
@@ -708,8 +754,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resumePaper = document.getElementById('resumePaper');
         const activeTemplate = resumeState.template || 'layout-modern';
+        const activeDensity = resumeState.density || 'density-normal';
         if (resumePaper) {
-            resumePaper.className = `resume-paper ${activeTemplate}`;
+            resumePaper.className = `resume-paper ${activeTemplate} ${activeDensity}`;
         }
 
         // Arrange sections according to current template layout
