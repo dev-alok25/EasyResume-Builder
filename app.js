@@ -817,50 +817,25 @@ document.addEventListener('DOMContentLoaded', () => {
             secEdu.classList.add('is-hidden');
         }
 
-        // Skills Section
+        // Skills & Languages Section (Bullet Points Format)
         const secSkills = document.getElementById('prev-sec-skills');
         const prevSkillsContainer = document.getElementById('prev-skills-container');
         prevSkillsContainer.innerHTML = '';
         if (resumeState.skills && resumeState.skills.trim()) {
             secSkills.classList.remove('is-hidden');
             const tags = resumeState.skills.split(',').map(s => s.trim()).filter(Boolean);
+            prevSkillsContainer.className = 'skills-bullet-list';
 
-            if (activeTemplate === 'layout-creative-navy') {
-                prevSkillsContainer.className = 'skills-progress-list';
-                const top5Tags = tags.slice(0, 5);
-                const defaultPcts = [90, 85, 80, 75, 70];
-                top5Tags.forEach((tag, idx) => {
-                    let skillName = tag;
-                    let pct = defaultPcts[idx % defaultPcts.length];
-
-                    const match = tag.match(/^(.*?)\s*\(?\s*(\d{1,3})%\s*\)?$/);
-                    if (match && match[1].trim()) {
-                        skillName = match[1].trim();
-                        pct = Math.min(100, Math.max(5, parseInt(match[2], 10)));
-                    }
-
+            tags.forEach(tag => {
+                // Strip out percentage notation if present for clean bullet point display
+                const cleanTag = tag.replace(/\s*\(?\d{1,3}%\)?/g, '').trim();
+                if (cleanTag) {
                     const div = document.createElement('div');
-                    div.className = 'skill-progress-item';
-                    div.innerHTML = `
-                        <div class="skill-progress-head">
-                            <span>${escapeHtml(skillName)}</span>
-                            <span class="skill-pct-val">${pct}%</span>
-                        </div>
-                        <div class="skill-progress-track">
-                            <div class="skill-progress-fill" style="width: ${pct}%;"></div>
-                        </div>
-                    `;
+                    div.className = 'skill-bullet-item';
+                    div.innerHTML = `<span class="bullet-dot">•</span> <span>${escapeHtml(cleanTag)}</span>`;
                     prevSkillsContainer.appendChild(div);
-                });
-            } else {
-                prevSkillsContainer.className = 'skills-tags-cloud';
-                tags.forEach(tag => {
-                    const chip = document.createElement('span');
-                    chip.className = 'skill-chip';
-                    chip.innerText = tag;
-                    prevSkillsContainer.appendChild(chip);
-                });
-            }
+                }
+            });
         } else {
             secSkills.classList.add('is-hidden');
         }
