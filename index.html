@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyResume - Modern Interactive Resume & CV Builder</title>
+    <meta name="description"
+        content="Build professional, ATS-friendly resumes in minutes. Features a dual-engine Form Builder and MS Word-style freeform canvas, live preview, and multi-format PDF exports. 100% free & open-source.">
+    <meta name="keywords" content="resume builder, cv creator, word canvas, pdf resume, free resume template, modern resume">
+    <meta name="author" content="Alok Yadav (@dev-alok25)">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="EasyResume - Modern Interactive Resume & CV Builder">
+    <meta property="og:description"
+        content="Create ATS-friendly professional resumes instantly with a dual-engine Form Builder, MS Word Canvas, and multi-option PDF export.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/dev-alok25/EasyResume-Builder/main/preview.png">
+
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="theme-emerald font-inter">
+
+    <!-- App Top Navigation Header -->
+    <header class="app-header">
+        <div class="header-top-row">
+            <div class="header-brand">
+                <div class="logo-icon"><i data-lucide="file-text"></i></div>
+                <div class="logo-text">
+                    <h1>EasyResume</h1>
+                    <span class="badge">Simple & Fast</span>
+                </div>
+            </div>
+
+            <!-- Mode Switcher Tabs -->
+            <div class="mode-tab-group">
+                <button type="button" class="mode-tab active" id="btnModeForm" title="Form Editor Split View">
+                    <i data-lucide="layout-grid"></i> <span>Form Builder</span>
+                </button>
+                <button type="button" class="mode-tab" id="btnModeWord" title="MS Word Style Document Canvas Editor">
+                    <i data-lucide="file-text"></i> <span>MS Word Canvas</span>
+                </button>
+            </div>
+            <div class="header-actions">
+                <button type="button" id="customizeToggleBtn" class="btn btn-secondary"
+                    title="Customize theme color, format template & fonts">
+                    <i data-lucide="sliders"></i> <span>Customize</span> <i data-lucide="chevron-down"
+                        class="chevron"></i>
+                </button>
+                <button id="clearBtn" class="btn btn-outline" title="Clear form">
+                    <i data-lucide="trash-2"></i> <span>Clear</span>
+                </button>
+                <button id="exportJsonBtn" class="btn btn-icon" title="Backup/Export JSON"
+                    aria-label="Backup or Export JSON">
+                    <i data-lucide="download"></i>
+                </button>
+                <label for="importJsonInput" class="btn btn-icon" title="Import JSON Backup"
+                    aria-label="Import JSON Backup">
+                    <i data-lucide="upload"></i>
+                    <input type="file" id="importJsonInput" accept=".json" style="display:none;"
+                        aria-label="Choose JSON file to import">
+                </label>
+                <!-- Download PDF Dropdown Menu -->
+                <div class="download-dropdown-wrap" id="downloadDropdownWrap">
+                    <button id="printBtn" class="btn btn-primary btn-download-main" title="Download PDF Options" aria-haspopup="true" aria-expanded="false">
+                        <i data-lucide="printer"></i> <span>Download PDF</span> <i data-lucide="chevron-down" class="btn-chevron"></i>
+                    </button>
+                    <div class="download-dropdown-menu" id="downloadDropdownMenu">
+                        <div class="download-menu-header">Select Download Format</div>
+                        <button type="button" class="download-menu-item" id="btnDownloadWord">
+                            <div class="item-icon-box word-icon-box">
+                                <i data-lucide="file-text"></i>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">MS Word Canvas Sheet</div>
+                                <div class="item-sub">Custom formatted layout & draggable elements</div>
+                            </div>
+                        </button>
+                        <button type="button" class="download-menu-item" id="btnDownloadForm">
+                            <div class="item-icon-box form-icon-box">
+                                <i data-lucide="layout-grid"></i>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">Form Builder Resume</div>
+                                <div class="item-sub">Clean structured template & sections</div>
+                            </div>
+                        </button>
+                        <div class="download-menu-divider"></div>
+                        <button type="button" class="download-menu-item" id="btnDownloadBoth">
+                            <div class="item-icon-box both-icon-box">
+                                <i data-lucide="layers"></i>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">Both Sheets (Combined PDF)</div>
+                                <div class="item-sub">Multi-page PDF containing both versions</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Developer Links -->
+                <div class="dev-links">
+                    <a href="https://github.com/dev-alok25" target="_blank" rel="noopener noreferrer"
+                        title="Visit GitHub" class="dev-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                    </a>
+                    <a href="https://linkedin.com/in/alok-yadav-032981340" target="_blank"
+                        rel="noopener noreferrer" title="Visit LinkedIn" class="dev-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customization Bottom Sub-Bar (Expands directly underneath top bar when Customize is clicked) -->
+        <div class="header-sub-bar" id="customizeSubBar">
+            <div class="sub-bar-inner">
+                <div class="control-group">
+                    <label><i data-lucide="palette"></i> Theme Color</label>
+                    <div class="color-picker-wrapper">
+                        <button class="color-dot" data-color="#2563eb" style="background-color: #2563eb;"
+                            title="Royal Blue"></button>
+                        <button class="color-dot active" data-color="#10b981" style="background-color: #10b981;"
+                            title="Emerald Green"></button>
+                        <button class="color-dot" data-color="#6366f1" style="background-color: #6366f1;"
+                            title="Indigo"></button>
+                        <button class="color-dot" data-color="#ec4899" style="background-color: #ec4899;"
+                            title="Rose"></button>
+                        <button class="color-dot" data-color="#8b5cf6" style="background-color: #8b5cf6;"
+                            title="Purple"></button>
+                        <button class="color-dot" data-color="#0f172a" style="background-color: #0f172a;"
+                            title="Dark Charcoal"></button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="templateSelect"><i data-lucide="layout"></i> Format Template</label>
+                    <select id="templateSelect" class="styled-select">
+                        <option value="layout-modern">Modern Clean (Single-Column)</option>
+                        <option value="layout-twocol">Split Two-Column (Sidebar Layout)</option>
+                        <option value="layout-executive">Executive Classic (Formal Serif)</option>
+                        <option value="layout-creative-navy">Creative Executive (Navy & Circle Photo)</option>
+                        <option value="layout-timeline-yellow">Frame Timeline (Banner Header & Nodes)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="fontSelect"><i data-lucide="type"></i> Typography</label>
+                    <select id="fontSelect" class="styled-select">
+                        <option value="font-inter">Modern (Inter)</option>
+                        <option value="font-outfit">Clean Sans (Outfit)</option>
+                        <option value="font-lora">Classic Serif (Lora)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="densitySelect"><i data-lucide="maximize-2"></i> Page Spacing</label>
+                    <select id="densitySelect" class="styled-select">
+                        <option value="density-normal">Normal Spacing</option>
+                        <option value="density-compact">Compact (Fit 1 Page)</option>
+                    </select>
+                </div>
+
+                <div class="control-group action-group">
+                    <button id="loadSampleBtn" class="btn btn-secondary btn-sm" title="Load sample resume info">
+                        <i data-lucide="sparkles"></i> <span>Sample Data</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container: Editor Panel (Left) & Live Preview Canvas (Right) -->
+    <main class="app-main">
+        <!-- LEFT SIDEBAR: EDITOR FORM -->
+        <aside class="editor-sidebar no-print">
+            <div class="sidebar-inner">
+
+                <!-- Section 1: Personal Information -->
+                <details class="editor-section" open>
+                    <summary class="section-header">
+                        <span class="title"><i data-lucide="user"></i> Personal Information</span>
+                        <i data-lucide="chevron-down" class="chevron"></i>
+                    </summary>
+                    <div class="section-body grid-2">
+                        <div class="form-group span-2">
+                            <label>Profile Picture</label>
+                            <div class="photo-upload-container">
+                                <div class="photo-preview-box" id="photoPreviewBox">
+                                    <img id="editorPhotoPreview" src="" alt="Profile Preview" style="display:none;">
+                                    <i data-lucide="user" id="photoPlaceholderIcon"></i>
+                                </div>
+                                <div class="photo-controls">
+                                    <label class="btn btn-secondary btn-sm" for="input-photo">
+                                        <i data-lucide="upload"></i> Upload Photo
+                                        <input type="file" id="input-photo" accept="image/*" style="display:none;">
+                                    </label>
+                                    <button type="button" id="removePhotoBtn" class="btn btn-outline btn-sm"
+                                        style="display:none;">
+                                        <i data-lucide="trash-2"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group span-2">
+                            <label>Full Name</label>
+                            <input type="text" id="input-fullName" placeholder="e.g. Abcd">
+                        </div>
+                        <div class="form-group span-2">
+                            <label>Professional Title</label>
+                            <input type="text" id="input-jobTitle" placeholder="e.g. Senior Full Stack Engineer">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="input-email" placeholder="e.g. abcd@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="input-phone" placeholder="e.g. +91 1234567890">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="input-location" placeholder="e.g. Lucknow, India">
+                        </div>
+                        <div class="form-group">
+                            <label>Website / Portfolio</label>
+                            <input type="text" id="input-website" placeholder="e.g. xyz.dev">
+                        </div>
+                        <div class="form-group">
+                            <label>LinkedIn</label>
+                            <input type="text" id="input-linkedin" placeholder="e.g. linkedin.com/in/abcd">
+                        </div>
+                        <div class="form-group">
+                            <label>GitHub</label>
+                            <input type="text" id="input-github" placeholder="e.g. github.com/dev-abcd">
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Section 2: Professional Summary -->
+                <details class="editor-section" open>
+                    <summary class="section-header">
+                        <span class="title"><i data-lucide="file-text"></i> Summary / Objective</span>
+                        <i data-lucide="chevron-down" class="chevron"></i>
+                    </summary>
+                    <div class="section-body">
+                        <div class="form-group">
+                            <label>Short Bio / Professional Summary</label>
+                            <textarea id="input-summary" rows="4"
+                                placeholder="Brief statement highlighting your expertise, key achievements, and career goals..."></textarea>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Section 3: Work Experience -->
+                <details class="editor-section" open>
+                    <summary class="section-header">
+                        <span class="title"><i data-lucide="briefcase"></i> Work Experience</span>
+                        <i data-lucide="chevron-down" class="chevron"></i>
+                    </summary>
+                    <div class="section-body">
+                        <div id="experience-list" class="dynamic-list"></div>
+                        <button type="button" id="addExperienceBtn" class="btn btn-add">
+                            <i data-lucide="plus-circle"></i> Add Experience
+                        </button>
+                    </div>
+                </details>
+
+                <!-- Section 4: Education -->
+                <details class="editor-section" open>
+                    <summary class="section-header">
+                        <span class="title"><i data-lucide="graduation-cap"></i> Education</span>
+                        <i data-lucide="chevron-down" class="chevron"></i>
+                    </summary>
+                    <div class="section-body">
+                        <div id="education-list" class="dynamic-list"></div>
+                        <button type="button" id="addEducationBtn" class="btn btn-add">
+                            <i data-lucide="plus-circle"></i> Add Education
+                        </button>
+                    </div>
+                </details>
+
+                <!-- Section 5: Skills & Languages -->
+                <details class="editor-section" open>
+                    <summary class="section-header">
+                        <span class="title"><i data-lucide="code-2"></i> Skills & Languages</span>
+                        <i data-lucide="chevron-down" class="chevron"></i>
+                    </summary>
+                    <div class="section-body">
+                        <div class="form-group">
+                            <label>Key Skills & Languages (comma separated)</label>
+                            <textarea id="input-skills" rows="3"
+                                placeholder="e.g. JavaScript, TypeScript, React, Python, English (Native), Spanish (Fluent)"></textarea>
+                            <span class="field-hint">Separate items with commas to render as bullet points.</span>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Section 6: Projects & Certifications -->
+                <details class="editor-section">
+                    <summary class="section-header">
+                        <span class="title"><i data-lucide="folder-git-2"></i> Projects & Certifications</span>
+                        <i data-lucide="chevron-down" class="chevron"></i>
+                    </summary>
+                    <div class="section-body">
+                        <div id="projects-list" class="dynamic-list"></div>
+                        <button type="button" id="addProjectBtn" class="btn btn-add">
+                            <i data-lucide="plus-circle"></i> Add Project / Certification
+                        </button>
+                    </div>
+                </details>
+
+            </div>
+        </aside>
+
+        <!-- RIGHT CANVAS: LIVE PREVIEW & A4 RESUME SHEET -->
+        <section class="preview-container">
+            <div class="preview-toolbar no-print">
+                <span class="preview-status"><i data-lucide="eye"></i> Live A4 Sheet Preview</span>
+                <span class="preview-hint">Tip: Click "Download PDF" to print or save clean document</span>
+            </div>
+
+            <!-- Printable A4 Document Canvas -->
+            <div class="a4-paper-wrapper">
+                <article class="resume-paper" id="resumePaper">
+                    <!-- Top Header Banner Container -->
+                    <header class="resume-header" id="resumeHeader">
+                        <div class="header-main-layout" id="headerMainLayout">
+                            <div class="preview-avatar-wrapper" id="prev-avatar-wrap" style="display:none;">
+                                <img id="prev-avatar" src="" alt="Profile Photo" class="preview-avatar-img">
+                                <div class="default-avatar-placeholder" id="default-avatar-icon" style="display:none;">
+                                    <i data-lucide="user"></i>
+                                </div>
+                            </div>
+                            <div class="header-text-block" id="headerTextBlock">
+                                <h1 class="preview-name" id="prev-fullName">Alex Morgan</h1>
+                                <div class="preview-job-title" id="prev-jobTitle">Senior Software Engineer</div>
+                            </div>
+                        </div>
+
+                        <div class="preview-contact-bar" id="prev-contactBar">
+                            <a class="contact-item" id="prev-email-wrap" href="mailto:abcd@example.com">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                                <span id="prev-email">abcd@example.com</span>
+                            </a>
+                            <a class="contact-item" id="prev-phone-wrap" href="tel:1234567890">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                <span id="prev-phone">1234567890</span>
+                            </a>
+                            <a class="contact-item" id="prev-location-wrap">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                <span id="prev-location">lucknow, India</span>
+                            </a>
+                            <a class="contact-item" id="prev-website-wrap" target="_blank" rel="noopener noreferrer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                                <span id="prev-website">abcd.dev</span>
+                            </a>
+                            <a class="contact-item" id="prev-linkedin-wrap" target="_blank" rel="noopener noreferrer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                <span id="prev-linkedin">linkedin.com/in/abcd</span>
+                            </a>
+                            <a class="contact-item" id="prev-github-wrap" target="_blank" rel="noopener noreferrer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                                <span id="prev-github">github.com/dev-abcd</span>
+                            </a>
+                        </div>
+                    </header>
+
+                    <div class="resume-accent-divider" id="resumeDivider"></div>
+
+                    <!-- Dynamic Layout Grid Wrapper -->
+                    <div class="resume-body-layout" id="resumeBodyLayout">
+                        <aside class="resume-sidebar-zone" id="resumeSidebarZone"></aside>
+
+                        <main class="resume-main-zone" id="resumeMainZone">
+                            <!-- Summary Section -->
+                            <section class="resume-section" id="prev-sec-summary">
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="user"></i></span> <span
+                                        class="sec-title-text">Profile Summary</span></h2>
+                                <p class="summary-text" id="prev-summary"></p>
+                            </section>
+
+                            <!-- Work Experience Section -->
+                            <section class="resume-section" id="prev-sec-experience">
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="briefcase"></i></span>
+                                    <span class="sec-title-text">Work Experience</span>
+                                </h2>
+                                <div id="prev-experience-list" class="preview-entries-list"></div>
+                            </section>
+
+                            <!-- Education Section -->
+                            <section class="resume-section" id="prev-sec-education">
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="graduation-cap"></i></span>
+                                    <span class="sec-title-text">Education</span>
+                                </h2>
+                                <div id="prev-education-list" class="preview-entries-list"></div>
+                            </section>
+
+                            <!-- Skills Section -->
+                            <section class="resume-section" id="prev-sec-skills">
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="code-2"></i></span> <span
+                                        class="sec-title-text">Skills & Technical Expertise</span></h2>
+                                <div id="prev-skills-container" class="skills-tags-cloud"></div>
+                            </section>
+
+                            <!-- Projects Section -->
+                            <section class="resume-section" id="prev-sec-projects">
+                                <h2 class="sec-title"><span class="sec-icon"><i data-lucide="folder-git-2"></i></span>
+                                    <span class="sec-title-text">Key Projects & Certifications</span>
+                                </h2>
+                                <div id="prev-projects-list" class="preview-entries-list"></div>
+                            </section>
+                        </main>
+                    </div>
+
+                    <!-- Footer Credit Tag (Used for Yellow Timeline layout) -->
+                    <footer class="resume-footer-tag" id="resumeFooterTag" style="display:none;">
+                        <span>© EasyResume. All rights reserved</span>
+                    </footer>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- MS WORD CANVAS EDITOR SECTION (Active in MS Word Canvas Mode) -->
+    <section class="word-editor-container" id="wordEditorSection" style="display: none;">
+        <!-- MS Word Formatting Ribbon Toolbar -->
+        <div class="word-ribbon-toolbar">
+            <div class="ribbon-row">
+                <!-- Group 1: Undo / Redo -->
+                <div class="ribbon-group" title="History">
+                    <button type="button" class="ribbon-btn" id="wordUndoBtn" title="Undo (Ctrl+Z)">
+                        <i data-lucide="undo"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordRedoBtn" title="Redo (Ctrl+Y)">
+                        <i data-lucide="redo"></i>
+                    </button>
+                </div>
+
+                <div class="ribbon-divider"></div>
+
+                <!-- Group 2: Font & Size -->
+                <div class="ribbon-group">
+                    <select id="wordFontFamily" class="ribbon-select" title="Font Family">
+                        <option value="Inter">Inter (Modern)</option>
+                        <option value="Outfit">Outfit (Clean)</option>
+                        <option value="Lora">Lora (Classic Serif)</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Courier New">Courier New</option>
+                    </select>
+
+                    <select id="wordFontSize" class="ribbon-select" title="Font Size">
+                        <option value="1">10px (Small)</option>
+                        <option value="2">12px (Regular)</option>
+                        <option value="3" selected>14px (Normal)</option>
+                        <option value="4">16px (Medium)</option>
+                        <option value="5">18px (Subheading)</option>
+                        <option value="6">24px (Title)</option>
+                        <option value="7">32px (Header)</option>
+                    </select>
+
+                    <button type="button" class="ribbon-btn" id="wordBoldBtn" title="Bold (Ctrl+B)">
+                        <i data-lucide="bold"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordItalicBtn" title="Italic (Ctrl+I)">
+                        <i data-lucide="italic"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordUnderlineBtn" title="Underline (Ctrl+U)">
+                        <i data-lucide="underline"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordStrikethroughBtn" title="Strikethrough">
+                        <i data-lucide="strikethrough"></i>
+                    </button>
+                </div>
+
+                <div class="ribbon-divider"></div>
+
+                <!-- Group 3: Color Pickers -->
+                <div class="ribbon-group">
+                    <label class="ribbon-color-picker" title="Text Foreground Color">
+                        <i data-lucide="palette"></i> Text
+                        <input type="color" id="wordTextColor" value="#0f172a">
+                    </label>
+                    <label class="ribbon-color-picker" title="Text Highlight Color">
+                        <i data-lucide="highlighter"></i> Highlight
+                        <input type="color" id="wordBgColor" value="#fef08a">
+                    </label>
+                    <button type="button" class="ribbon-btn" id="wordClearFormatBtn" title="Clear Formatting">
+                        <i data-lucide="eraser"></i>
+                    </button>
+                </div>
+
+                <div class="ribbon-divider"></div>
+
+                <!-- Group 4: Paragraph Alignment & Lists -->
+                <div class="ribbon-group">
+                    <button type="button" class="ribbon-btn" id="wordAlignLeft" title="Align Left">
+                        <i data-lucide="align-left"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordAlignCenter" title="Align Center">
+                        <i data-lucide="align-center"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordAlignRight" title="Align Right">
+                        <i data-lucide="align-right"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordAlignJustify" title="Justify">
+                        <i data-lucide="align-justify"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordBulletList" title="Bullet List">
+                        <i data-lucide="list"></i>
+                    </button>
+                    <button type="button" class="ribbon-btn" id="wordNumberList" title="Numbered List">
+                        <i data-lucide="list-ordered"></i>
+                    </button>
+                </div>
+
+                <div class="ribbon-divider"></div>
+
+                <!-- Group 5: Insert Elements -->
+                <div class="ribbon-group">
+                    <label class="ribbon-btn btn-with-text" id="wordPhotoLabel" title="Upload Profile Photo" style="cursor:pointer;">
+                        <i data-lucide="image"></i> <span>Photo</span>
+                        <input type="file" accept="image/*" id="input-photo-word" style="display:none;">
+                    </label>
+                    <button type="button" class="ribbon-btn btn-with-text" id="wordInsertTable" title="Insert 3x3 Table Grid">
+                        <i data-lucide="table"></i> <span>Table</span>
+                    </button>
+                    <button type="button" class="ribbon-btn btn-with-text" id="wordInsertHr" title="Insert Horizontal Line Divider">
+                        <i data-lucide="minus"></i> <span>Line</span>
+                    </button>
+                    <button type="button" class="ribbon-btn btn-with-text" id="wordInsertBadge" title="Insert Skill Badge Chip">
+                        <i data-lucide="award"></i> <span>Badge</span>
+                    </button>
+                </div>
+
+                <div class="ribbon-divider"></div>
+
+                <!-- Group 6: Form Sync & Actions -->
+                <div class="ribbon-group ribbon-group-right">
+                    <button type="button" class="btn btn-secondary btn-sm" id="wordSyncFromFormBtn"
+                        title="Import and convert structured Form Builder data into editable MS Word Canvas document">
+                        <i data-lucide="sparkles"></i> <span>Sync Form Data</span>
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm" id="wordClearCanvasBtn" title="Clear Document Canvas">
+                        <i data-lucide="trash-2"></i> <span>Clear Canvas</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MS Word Ruler & Document Workspace Scroll Area -->
+        <div class="word-workspace" id="wordWorkspace">
+            <div class="word-page-container">
+                <!-- Centimeter Ruler Marking Bar -->
+                <div class="word-ruler" title="Centimeter Margin Ruler">
+                    <div class="ruler-ticks">
+                        <span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span>
+                    </div>
+                </div>
+
+                <!-- A4 MS Word Document Paper Canvas -->
+                <article class="word-document-paper" id="wordDocumentPaper">
+                    <div class="word-canvas-body" id="wordDocumentCanvas" contenteditable="true" spellcheck="true"
+                        title="Click anywhere to type or format text directly like MS Word">
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- MS Word Status Bar -->
+        <div class="word-status-bar">
+            <div class="status-left">
+                <span id="wordStatusPage"><i data-lucide="file-text"></i> Page 1 of 1</span>
+                <span class="status-sep">|</span>
+                <span id="wordStatusWords">0 words</span>
+                <span class="status-sep">|</span>
+                <span id="wordStatusChars">0 characters</span>
+            </div>
+            <div class="status-right">
+                <i data-lucide="zoom-in"></i>
+                <label for="wordZoomSlider">Zoom:</label>
+                <input type="range" id="wordZoomSlider" min="50" max="150" value="100" step="5">
+                <span id="wordZoomVal">100%</span>
+            </div>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
