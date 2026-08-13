@@ -445,20 +445,14 @@ document.addEventListener('DOMContentLoaded', () => {
             renderPreview();
         });
 
-        // Customize Popover Dropdown Toggle
+        // Customize Bottom Sub-Bar Toggle
         const customizeToggleBtn = document.getElementById('customizeToggleBtn');
-        const customizePanel = document.getElementById('customizePanel');
+        const customizeSubBar = document.getElementById('customizeSubBar');
 
-        if (customizeToggleBtn && customizePanel) {
-            customizeToggleBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                customizePanel.classList.toggle('is-open');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!customizePanel.contains(e.target) && e.target !== customizeToggleBtn) {
-                    customizePanel.classList.remove('is-open');
-                }
+        if (customizeToggleBtn && customizeSubBar) {
+            customizeToggleBtn.addEventListener('click', () => {
+                customizeSubBar.classList.toggle('is-open');
+                customizeToggleBtn.classList.toggle('active');
             });
         }
     }

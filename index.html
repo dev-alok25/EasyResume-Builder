@@ -36,59 +36,21 @@
             </div>
         </div>
 
-        <div class="header-right-nav">
-            <!-- Customize Menu Trigger Button & Popover Panel -->
-            <div class="customize-popover-wrapper">
-                <button type="button" id="customizeToggleBtn" class="btn btn-secondary" title="Customize theme color, format template & fonts">
-                    <i data-lucide="sliders"></i> <span>Customize</span> <i data-lucide="chevron-down" class="chevron"></i>
-                </button>
-
-                <!-- Floating Customize Popover Panel -->
-                <div class="customize-popover-panel" id="customizePanel">
-                    <div class="popover-section">
-                        <label><i data-lucide="palette"></i> Theme Color</label>
-                        <div class="color-picker-wrapper">
-                            <button class="color-dot active" data-color="#3b82f6" style="background-color: #3b82f6;" title="Blue"></button>
-                            <button class="color-dot" data-color="#10b981" style="background-color: #10b981;" title="Emerald"></button>
-                            <button class="color-dot" data-color="#6366f1" style="background-color: #6366f1;" title="Indigo"></button>
-                            <button class="color-dot" data-color="#ec4899" style="background-color: #ec4899;" title="Rose"></button>
-                            <button class="color-dot" data-color="#8b5cf6" style="background-color: #8b5cf6;" title="Purple"></button>
-                            <button class="color-dot" data-color="#0f172a" style="background-color: #0f172a;" title="Dark Charcoal"></button>
-                        </div>
-                    </div>
-
-                    <div class="popover-section">
-                        <label for="templateSelect"><i data-lucide="layout"></i> Format Template</label>
-                        <select id="templateSelect" class="styled-select">
-                            <option value="layout-modern">Modern Clean (Single-Column)</option>
-                            <option value="layout-twocol">Split Two-Column (Sidebar Layout)</option>
-                            <option value="layout-executive">Executive Classic (Formal Serif)</option>
-                            <option value="layout-creative-navy">Creative Executive (Navy & Circle Photo)</option>
-                            <option value="layout-timeline-yellow">Yellow Frame Timeline (Banner Header & Nodes)</option>
-                        </select>
-                    </div>
-
-                    <div class="popover-section">
-                        <label for="fontSelect"><i data-lucide="type"></i> Typography</label>
-                        <select id="fontSelect" class="styled-select">
-                            <option value="font-inter">Modern (Inter)</option>
-                            <option value="font-outfit">Clean Sans (Outfit)</option>
-                            <option value="font-lora">Classic Serif (Lora)</option>
-                        </select>
-                    </div>
-
-                    <div class="popover-divider"></div>
-
-                    <div class="popover-section">
-                        <button id="loadSampleBtn" class="btn btn-secondary btn-full" title="Load sample resume info">
-                            <i data-lucide="sparkles"></i> <span>Load Sample Data</span>
-                        </button>
-                    </div>
+        <!-- Main Top Row -->
+        <div class="header-top-row">
+            <div class="header-brand">
+                <div class="logo-icon"><i data-lucide="file-text"></i></div>
+                <div class="logo-text">
+                    <h1>EasyResume</h1>
+                    <span class="badge">Simple & Fast</span>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Header Action Controls -->
             <div class="header-actions">
+                <button type="button" id="customizeToggleBtn" class="btn btn-secondary" title="Customize theme color, format template & fonts">
+                    <i data-lucide="sliders"></i> <span>Customize</span> <i data-lucide="chevron-down" class="chevron"></i>
+                </button>
                 <button id="clearBtn" class="btn btn-outline" title="Clear form">
                     <i data-lucide="trash-2"></i> <span>Clear</span>
                 </button>
@@ -102,6 +64,49 @@
                 <button id="printBtn" class="btn btn-primary" title="Print or Save as PDF">
                     <i data-lucide="printer"></i> <span>Download PDF</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- Customization Bottom Sub-Bar (Expands directly underneath top bar when Customize is clicked) -->
+        <div class="header-sub-bar" id="customizeSubBar">
+            <div class="sub-bar-inner">
+                <div class="control-group">
+                    <label><i data-lucide="palette"></i> Theme Color</label>
+                    <div class="color-picker-wrapper">
+                        <button class="color-dot active" data-color="#3b82f6" style="background-color: #3b82f6;" title="Blue"></button>
+                        <button class="color-dot" data-color="#10b981" style="background-color: #10b981;" title="Emerald"></button>
+                        <button class="color-dot" data-color="#6366f1" style="background-color: #6366f1;" title="Indigo"></button>
+                        <button class="color-dot" data-color="#ec4899" style="background-color: #ec4899;" title="Rose"></button>
+                        <button class="color-dot" data-color="#8b5cf6" style="background-color: #8b5cf6;" title="Purple"></button>
+                        <button class="color-dot" data-color="#0f172a" style="background-color: #0f172a;" title="Dark Charcoal"></button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="templateSelect"><i data-lucide="layout"></i> Format Template</label>
+                    <select id="templateSelect" class="styled-select">
+                        <option value="layout-modern">Modern Clean (Single-Column)</option>
+                        <option value="layout-twocol">Split Two-Column (Sidebar Layout)</option>
+                        <option value="layout-executive">Executive Classic (Formal Serif)</option>
+                        <option value="layout-creative-navy">Creative Executive (Navy & Circle Photo)</option>
+                        <option value="layout-timeline-yellow">Yellow Frame Timeline (Banner Header & Nodes)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="fontSelect"><i data-lucide="type"></i> Typography</label>
+                    <select id="fontSelect" class="styled-select">
+                        <option value="font-inter">Modern (Inter)</option>
+                        <option value="font-outfit">Clean Sans (Outfit)</option>
+                        <option value="font-lora">Classic Serif (Lora)</option>
+                    </select>
+                </div>
+
+                <div class="control-group action-group">
+                    <button id="loadSampleBtn" class="btn btn-secondary btn-sm" title="Load sample resume info">
+                        <i data-lucide="sparkles"></i> <span>Sample Data</span>
+                    </button>
+                </div>
             </div>
         </div>
     </header>

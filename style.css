@@ -59,19 +59,25 @@ body {
     overflow-x: hidden;
 }
 
-/* --- App Header Navigation --- */
+/* --- App Header Navigation & Bottom Sub-Bar --- */
 .app-header {
-    height: 64px;
-    background-color: rgba(30, 41, 59, 0.95);
+    background-color: rgba(30, 41, 59, 0.96);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--sidebar-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-top-row {
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 24px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    width: 100%;
 }
 
 .header-brand {
@@ -80,70 +86,24 @@ body {
     gap: 12px;
 }
 
-.logo-icon {
-    width: 38px;
-    height: 38px;
-    background: linear-gradient(135deg, var(--accent-color), #60a5fa);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.logo-text h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: -0.5px;
-    line-height: 1;
-}
-
-.logo-text .badge {
-    font-size: 0.7rem;
-    color: var(--accent-color);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.header-right-nav {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.customize-popover-wrapper {
-    position: relative;
-}
-
-.customize-popover-panel {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    width: 300px;
-    background-color: rgba(30, 41, 59, 0.98);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--sidebar-border);
-    border-radius: var(--radius-md);
-    padding: 18px;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+/* Customization Bottom Sub-Bar (Expands directly below header bar) */
+.header-sub-bar {
     display: none;
-    flex-direction: column;
-    gap: 14px;
-    z-index: 1000;
+    background-color: rgba(15, 23, 42, 0.96);
+    border-top: 1px solid var(--sidebar-border);
+    padding: 10px 24px;
+    width: 100%;
+    animation: subBarSlideDown 0.2s ease-out;
 }
 
-.customize-popover-panel.is-open {
-    display: flex;
-    animation: popoverFadeIn 0.2s ease;
+.header-sub-bar.is-open {
+    display: block;
 }
 
-@keyframes popoverFadeIn {
+@keyframes subBarSlideDown {
     from {
         opacity: 0;
-        transform: translateY(-8px);
+        transform: translateY(-6px);
     }
     to {
         opacity: 1;
@@ -151,45 +111,45 @@ body {
     }
 }
 
-.popover-section {
+.sub-bar-inner {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-.popover-section label {
+.sub-bar-inner .control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sub-bar-inner .control-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dark-secondary);
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-dark-secondary);
+    white-space: nowrap;
 }
 
-.popover-section label i {
-    width: 15px;
-    height: 15px;
+.sub-bar-inner .control-group label i {
     color: var(--accent-color);
 }
 
-.popover-section .styled-select {
-    width: 100%;
+.sub-bar-inner .styled-select {
+    padding: 6px 12px;
+    font-size: 0.83rem;
 }
 
-.popover-section .color-picker-wrapper {
-    justify-content: space-between;
-    padding: 6px 8px;
+#customizeToggleBtn.active .chevron {
+    transform: rotate(180deg);
 }
 
-.popover-divider {
-    height: 1px;
-    background-color: var(--sidebar-border);
-    margin: 4px 0;
-}
-
-.btn-full {
-    width: 100%;
-    justify-content: center;
+.chevron {
+    transition: transform 0.2s ease;
 }
 
 .control-group {
