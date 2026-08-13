@@ -719,12 +719,12 @@ document.addEventListener('DOMContentLoaded', () => {
             header.appendChild(contactBar);
 
             sidebarZone.innerHTML = '';
+            sidebarZone.appendChild(secEdu);
             sidebarZone.appendChild(secSkills);
 
             mainZone.innerHTML = '';
             mainZone.appendChild(secSummary);
             mainZone.appendChild(secExp);
-            mainZone.appendChild(secEdu);
             mainZone.appendChild(secProj);
 
         } else {
