@@ -444,6 +444,23 @@ document.addEventListener('DOMContentLoaded', () => {
             saveToStorage();
             renderPreview();
         });
+
+        // Customize Popover Dropdown Toggle
+        const customizeToggleBtn = document.getElementById('customizeToggleBtn');
+        const customizePanel = document.getElementById('customizePanel');
+
+        if (customizeToggleBtn && customizePanel) {
+            customizeToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                customizePanel.classList.toggle('is-open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!customizePanel.contains(e.target) && e.target !== customizeToggleBtn) {
+                    customizePanel.classList.remove('is-open');
+                }
+            });
+        }
     }
 
     // --- Dynamic List Add Buttons ---

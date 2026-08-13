@@ -108,10 +108,88 @@ body {
     letter-spacing: 0.5px;
 }
 
-.header-controls {
+.header-right-nav {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
+}
+
+.customize-popover-wrapper {
+    position: relative;
+}
+
+.customize-popover-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 300px;
+    background-color: rgba(30, 41, 59, 0.98);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--sidebar-border);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 1000;
+}
+
+.customize-popover-panel.is-open {
+    display: flex;
+    animation: popoverFadeIn 0.2s ease;
+}
+
+@keyframes popoverFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.popover-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.popover-section label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-dark-secondary);
+}
+
+.popover-section label i {
+    width: 15px;
+    height: 15px;
+    color: var(--accent-color);
+}
+
+.popover-section .styled-select {
+    width: 100%;
+}
+
+.popover-section .color-picker-wrapper {
+    justify-content: space-between;
+    padding: 6px 8px;
+}
+
+.popover-divider {
+    height: 1px;
+    background-color: var(--sidebar-border);
+    margin: 4px 0;
+}
+
+.btn-full {
+    width: 100%;
+    justify-content: center;
 }
 
 .control-group {
