@@ -827,8 +827,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (activeTemplate === 'layout-creative-navy') {
                 prevSkillsContainer.className = 'skills-progress-list';
-                const pcts = [88, 81, 90, 78, 85, 92, 75, 80];
-                tags.forEach((tag, idx) => {
+                const top5Tags = tags.slice(0, 5);
+                const pcts = [90, 85, 80, 75, 70];
+                top5Tags.forEach((tag, idx) => {
                     const pct = pcts[idx % pcts.length];
                     const div = document.createElement('div');
                     div.className = 'skill-progress-item';
