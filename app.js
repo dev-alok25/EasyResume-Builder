@@ -578,18 +578,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Helper to get or recreate persistent header DOM nodes ---
+    function getHeaderElements() {
+        let avatarWrap = document.getElementById('prev-avatar-wrap');
+        if (!avatarWrap) {
+            avatarWrap = document.createElement('div');
+            avatarWrap.className = 'preview-avatar-wrapper';
+            avatarWrap.id = 'prev-avatar-wrap';
+            avatarWrap.style.display = 'none';
+            avatarWrap.innerHTML = `
+                <img id="prev-avatar" src="" alt="Profile Photo" class="preview-avatar-img">
+                <div class="default-avatar-placeholder" id="default-avatar-icon" style="display:none;">
+                    <i data-lucide="user"></i>
+                </div>
+            `;
+        }
+
+        let textBlock = document.getElementById('headerTextBlock');
+        if (!textBlock) {
+            textBlock = document.createElement('div');
+            textBlock.className = 'header-text-block';
+            textBlock.id = 'headerTextBlock';
+            textBlock.innerHTML = `
+                <h1 class="preview-name" id="prev-fullName">Alex Morgan</h1>
+                <div class="preview-job-title" id="prev-jobTitle">Senior Software Engineer</div>
+            `;
+        }
+
+        let headerMainLayout = document.getElementById('headerMainLayout');
+        if (!headerMainLayout) {
+            headerMainLayout = document.createElement('div');
+            headerMainLayout.className = 'header-main-layout';
+            headerMainLayout.id = 'headerMainLayout';
+        }
+
+        let contactBar = document.getElementById('prev-contactBar');
+        if (!contactBar) {
+            contactBar = document.createElement('div');
+            contactBar.className = 'preview-contact-bar';
+            contactBar.id = 'prev-contactBar';
+        }
+
+        return { avatarWrap, textBlock, headerMainLayout, contactBar };
+    }
+
     // --- Arrange Layout according to selected Template ---
     function arrangeLayout(template) {
         const paper = document.getElementById('resumePaper');
         const header = document.getElementById('resumeHeader');
         const sidebarZone = document.getElementById('resumeSidebarZone');
         const mainZone = document.getElementById('resumeMainZone');
-        const contactBar = document.getElementById('prev-contactBar');
-        const avatarWrap = document.getElementById('prev-avatar-wrap');
-        const textBlock = document.getElementById('headerTextBlock');
-        const headerMainLayout = document.getElementById('headerMainLayout');
         const footerTag = document.getElementById('resumeFooterTag');
         const divider = document.getElementById('resumeDivider');
+
+        const { avatarWrap, textBlock, headerMainLayout, contactBar } = getHeaderElements();
 
         const secSummary = document.getElementById('prev-sec-summary');
         const secExp = document.getElementById('prev-sec-experience');
@@ -607,10 +649,10 @@ document.addEventListener('DOMContentLoaded', () => {
         divider.style.display = 'block';
 
         if (template === 'layout-creative-navy') {
-            titleSummary.textContent = 'ABOUT ME';
-            titleExp.textContent = 'EXPERIENCE';
+            titleSummary.textContent = 'PROFILE & ABOUT ME';
+            titleExp.textContent = 'PROFESSIONAL CAREER & EXPERIENCE';
             titleEdu.textContent = 'EDUCATION';
-            titleSkills.textContent = 'EXPERTISE';
+            titleSkills.textContent = 'SKILLS & LANGUAGES';
             titleProj.textContent = 'PROJECTS & CERTIFICATIONS';
 
             header.style.display = 'block';
@@ -629,11 +671,11 @@ document.addEventListener('DOMContentLoaded', () => {
             mainZone.appendChild(secProj);
 
         } else if (template === 'layout-timeline-yellow') {
-            titleSummary.textContent = 'CAREER OBJECTIVE';
-            titleSkills.textContent = 'KEY SKILLS';
-            titleExp.textContent = 'EXPERIENCE (SKIP IF FRESHER)';
+            titleSummary.textContent = 'CAREER OBJECTIVE & PROFILE';
+            titleSkills.textContent = 'KEY SKILLS & LANGUAGES';
+            titleExp.textContent = 'PROFESSIONAL CAREER & EXPERIENCE';
             titleEdu.textContent = 'EDUCATION';
-            titleProj.textContent = 'PROJECTS / INTERNSHIPS (FOR FRESHERS)';
+            titleProj.textContent = 'PROJECTS & INTERNSHIPS';
 
             footerTag.style.display = 'block';
             divider.style.display = 'none';
@@ -662,10 +704,10 @@ document.addEventListener('DOMContentLoaded', () => {
             mainZone.appendChild(secEdu);
 
         } else if (template === 'layout-twocol') {
-            titleSummary.textContent = 'Profile Summary';
-            titleExp.textContent = 'Work Experience';
+            titleSummary.textContent = 'Profile & About Me';
+            titleExp.textContent = 'Professional Career & Experience';
             titleEdu.textContent = 'Education';
-            titleSkills.textContent = 'Skills & Expertise';
+            titleSkills.textContent = 'Skills & Languages';
             titleProj.textContent = 'Key Projects & Certifications';
 
             header.style.display = 'block';
@@ -687,10 +729,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } else {
             // Modern Clean & Executive Classic (Single Column)
-            titleSummary.textContent = 'Profile Summary';
-            titleExp.textContent = 'Work Experience';
+            titleSummary.textContent = 'Profile & About Me';
+            titleExp.textContent = 'Professional Career & Experience';
             titleEdu.textContent = 'Education';
-            titleSkills.textContent = 'Skills & Technical Expertise';
+            titleSkills.textContent = 'Skills & Languages';
             titleProj.textContent = 'Key Projects & Certifications';
 
             header.style.display = 'block';

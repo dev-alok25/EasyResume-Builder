@@ -1086,36 +1086,81 @@ body {
     height: 18px;
 }
 
-.summary-text {
-    font-size: 0.92rem;
-    color: var(--text-secondary);
-    white-space: pre-line;
+/* --- Distinct Profile / About Me Callout Card --- */
+#prev-sec-summary {
+    background-color: var(--accent-light, rgba(59, 130, 246, 0.06));
+    border-left: 4px solid var(--accent-color);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 22px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+#prev-sec-summary .sec-title {
+    border-bottom: none;
+    margin-bottom: 6px;
+    color: var(--accent-color);
+    font-size: 0.95rem;
+    letter-spacing: 0.9px;
+}
+
+#prev-sec-summary .summary-text {
+    font-style: italic;
+    color: var(--text-primary);
     line-height: 1.6;
 }
 
-/* Entry Lists (Experience, Education, Projects) */
-.preview-entries-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+/* Creative Navy Template specific About Me sidebar card */
+.resume-paper.layout-creative-navy #prev-sec-summary {
+    background: rgba(255, 255, 255, 0.08);
+    border-left: 3px solid #ffffff;
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin-bottom: 18px;
 }
 
-.preview-entry {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+.resume-paper.layout-creative-navy #prev-sec-summary .sec-title {
+    color: #ffffff;
 }
 
-.entry-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+.resume-paper.layout-creative-navy #prev-sec-summary .summary-text {
+    color: #cbd5e1;
+    font-size: 0.82rem;
 }
 
-.entry-title {
-    font-size: 0.96rem;
-    font-weight: 700;
-    color: var(--text-primary);
+/* --- Distinct Professional Career & Experience Section --- */
+#prev-sec-experience .sec-title {
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+}
+
+#prev-sec-experience .preview-entry {
+    background-color: rgba(248, 250, 252, 0.75);
+    border-left: 3px solid var(--accent-color);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 10px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+#prev-sec-experience .entry-subtitle {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+#prev-sec-experience .entry-date-loc {
+    background-color: var(--accent-light);
+    color: var(--accent-color);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 1px solid var(--accent-subtle);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 .entry-subtitle {
