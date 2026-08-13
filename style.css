@@ -727,7 +727,10 @@ body {
 }
 
 .resume-paper.layout-twocol .preview-contact-bar {
-    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .resume-paper.layout-twocol .skills-tags-cloud {
@@ -975,16 +978,13 @@ body {
     border-bottom: 1px solid #cbd5e1;
     margin-top: 4px;
 }
-/* Contact bar in main zone: horizontal inline */
+
+/* Contact bar in sidebar: vertical */
 .resume-paper.layout-timeline-yellow .preview-contact-bar {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px 16px;
-    padding: 10px 0;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .resume-paper.layout-timeline-yellow .contact-item {
@@ -997,10 +997,6 @@ body {
     position: relative;
     border-left: 2px solid #cbd5e1;
     margin-left: 24px;
-}
-
-.resume-paper.layout-timeline-yellow .resume-main-zone .preview-avatar-wrapper {
-    display: none;
 }
 
 .resume-paper.layout-timeline-yellow .sec-title {
@@ -1417,5 +1413,9 @@ body {
 
     .resume-paper.density-compact {
         padding: 24px 28px !important;
+    }
+
+    .resume-paper.layout-timeline-yellow {
+        padding: 0 !important;
     }
 }

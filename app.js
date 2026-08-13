@@ -649,6 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
         divider.style.display = 'block';
 
         if (template === 'layout-creative-navy') {
+            // TWO-COLUMN: Sidebar = Contact → Education → Skills
             titleSummary.textContent = 'PROFILE & ABOUT ME';
             titleExp.textContent = 'PROFESSIONAL CAREER & EXPERIENCE';
             titleEdu.textContent = 'EDUCATION';
@@ -661,16 +662,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             sidebarZone.innerHTML = '';
             sidebarZone.appendChild(avatarWrap);
-            sidebarZone.appendChild(secSummary);
             sidebarZone.appendChild(contactBar);
+            sidebarZone.appendChild(secEdu);
             sidebarZone.appendChild(secSkills);
 
             mainZone.innerHTML = '';
+            mainZone.appendChild(secSummary);
             mainZone.appendChild(secExp);
-            mainZone.appendChild(secEdu);
             mainZone.appendChild(secProj);
 
         } else if (template === 'layout-timeline-yellow') {
+            // TWO-COLUMN: Sidebar = Contact → Education → Skills
             titleSummary.textContent = 'CAREER OBJECTIVE & PROFILE';
             titleSkills.textContent = 'KEY SKILLS & LANGUAGES';
             titleExp.textContent = 'PROFESSIONAL CAREER & EXPERIENCE';
@@ -685,17 +687,17 @@ document.addEventListener('DOMContentLoaded', () => {
             header.appendChild(textBlock);
 
             sidebarZone.innerHTML = '';
+            sidebarZone.appendChild(contactBar);
             sidebarZone.appendChild(secEdu);
             sidebarZone.appendChild(secSkills);
 
             mainZone.innerHTML = '';
-            mainZone.appendChild(avatarWrap);
-            mainZone.appendChild(contactBar);
             mainZone.appendChild(secSummary);
             mainZone.appendChild(secExp);
             mainZone.appendChild(secProj);
 
         } else if (template === 'layout-twocol') {
+            // TWO-COLUMN: Sidebar = Contact → Education → Skills
             titleSummary.textContent = 'Profile & About Me';
             titleExp.textContent = 'Professional Career & Experience';
             titleEdu.textContent = 'Education';
@@ -708,9 +710,9 @@ document.addEventListener('DOMContentLoaded', () => {
             headerMainLayout.appendChild(avatarWrap);
             headerMainLayout.appendChild(textBlock);
             header.appendChild(headerMainLayout);
-            header.appendChild(contactBar);
 
             sidebarZone.innerHTML = '';
+            sidebarZone.appendChild(contactBar);
             sidebarZone.appendChild(secEdu);
             sidebarZone.appendChild(secSkills);
 
@@ -720,7 +722,8 @@ document.addEventListener('DOMContentLoaded', () => {
             mainZone.appendChild(secProj);
 
         } else {
-            // Modern Clean & Executive Classic (Single Column)
+            // SINGLE COLUMN (Modern Clean & Executive Classic)
+            // Order: Contact → Education → Experience → Skills → Projects
             titleSummary.textContent = 'Profile & About Me';
             titleExp.textContent = 'Professional Career & Experience';
             titleEdu.textContent = 'Education';
