@@ -550,8 +550,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const fullName = (resumeState.personal && resumeState.personal.fullName) ? resumeState.personal.fullName.trim() : 'Resume';
             const fileName = `${fullName.toLowerCase().replace(/\s+/g, '_')}_resume.pdf`;
 
+            // Store original inline styles to restore after export
+            const origHeight = paperElement.style.height;
+            const origMaxHeight = paperElement.style.maxHeight;
+            const origOverflow = paperElement.style.overflow;
+            const origBoxSizing = paperElement.style.boxSizing;
+
             try {
                 if (typeof html2pdf !== 'undefined') {
+                    // Clamp paper height strictly to 297mm (A4 height) for 1-page export to prevent blank page overflow
+                    const isCompactOrSingle = resumeState.density === 'density-compact' || paperElement.scrollHeight <= 1160;
+                    if (isCompactOrSingle) {
+                        paperElement.style.height = '297mm';
+                        paperElement.style.maxHeight = '297mm';
+                        paperElement.style.overflow = 'hidden';
+                        paperElement.style.boxSizing = 'border-box';
+                    }
+
                     const opt = {
                         margin: 0,
                         filename: fileName,
@@ -562,7 +577,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             useCORS: true, 
                             logging: false,
                             scrollX: 0,
-                            scrollY: 0
+                            scrollY: 0,
+                            windowWidth: 794
                         },
                         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                     };
@@ -574,6 +590,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('PDF generation error, falling back to window.print():', err);
                 window.print();
             } finally {
+                // Restore original styles
+                paperElement.style.height = origHeight;
+                paperElement.style.maxHeight = origMaxHeight;
+                paperElement.style.overflow = origOverflow;
+                paperElement.style.boxSizing = origBoxSizing;
+
                 printBtn.disabled = false;
                 printBtn.innerHTML = originalHtml;
                 if (window.lucide) window.lucide.createIcons();
