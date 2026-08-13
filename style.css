@@ -903,11 +903,11 @@ body {
     transition: width 0.3s ease;
 }
 
-/* Template 5: Yellow Frame Timeline (Banner Header & Nodes - Image 2) */
+/* Template 5: Frame Timeline (Banner Header & Nodes - Image 2) */
 .resume-paper.layout-timeline-yellow {
     padding: 0;
     background-color: #ffffff;
-    border: 14px solid #facc15;
+    border: 14px solid var(--accent-color, #facc15);
     box-sizing: border-box;
     position: relative;
 }
@@ -934,7 +934,7 @@ body {
 }
 
 .resume-paper.layout-timeline-yellow .preview-job-title {
-    color: #facc15;
+    color: var(--accent-color, #facc15);
     font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 1.5px;
@@ -993,6 +993,21 @@ body {
     position: relative;
     border-left: 2px solid #cbd5e1;
     margin-left: 24px;
+}
+
+/* Contact bar in main zone: horizontal inline */
+.resume-paper.layout-timeline-yellow .resume-main-zone .preview-contact-bar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.resume-paper.layout-timeline-yellow .resume-main-zone .preview-avatar-wrapper {
+    display: none;
 }
 
 .resume-paper.layout-timeline-yellow .sec-title {

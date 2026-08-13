@@ -685,23 +685,15 @@ document.addEventListener('DOMContentLoaded', () => {
             header.appendChild(textBlock);
 
             sidebarZone.innerHTML = '';
-            sidebarZone.appendChild(avatarWrap);
-            
-            let sidebarContactHead = sidebarZone.querySelector('.sidebar-sec-title');
-            if (!sidebarContactHead) {
-                sidebarContactHead = document.createElement('div');
-                sidebarContactHead.className = 'sidebar-sec-title';
-                sidebarContactHead.textContent = 'CONTACT';
-            }
-            sidebarZone.appendChild(sidebarContactHead);
-            sidebarZone.appendChild(contactBar);
-            sidebarZone.appendChild(secProj);
+            sidebarZone.appendChild(secEdu);
+            sidebarZone.appendChild(secSkills);
 
             mainZone.innerHTML = '';
+            mainZone.appendChild(avatarWrap);
+            mainZone.appendChild(contactBar);
             mainZone.appendChild(secSummary);
-            mainZone.appendChild(secSkills);
             mainZone.appendChild(secExp);
-            mainZone.appendChild(secEdu);
+            mainZone.appendChild(secProj);
 
         } else if (template === 'layout-twocol') {
             titleSummary.textContent = 'Profile & About Me';
