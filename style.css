@@ -1185,11 +1185,11 @@ body {
     line-height: 1.55;
 }
 
-/* Skills & Languages Bullet Point List */
+/* Skills & Languages Bullet Point List (Aligned 2 skills per row) */
 .skills-bullet-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 20px;
     margin-top: 4px;
 }
 
@@ -1209,6 +1209,14 @@ body {
     font-weight: 700;
     font-size: 1.1rem;
     line-height: 1;
+}
+
+/* Sidebar narrow column adjustments */
+.resume-paper.layout-creative-navy .skills-bullet-list,
+.resume-paper.layout-timeline-yellow .skills-bullet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .resume-paper.layout-creative-navy .skill-bullet-item,

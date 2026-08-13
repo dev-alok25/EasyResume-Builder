@@ -747,8 +747,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             mainZone.innerHTML = '';
             mainZone.appendChild(secSummary);
-            mainZone.appendChild(secExp);
             mainZone.appendChild(secEdu);
+            mainZone.appendChild(secExp);
             mainZone.appendChild(secSkills);
             mainZone.appendChild(secProj);
         }
