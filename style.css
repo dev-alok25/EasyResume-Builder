@@ -975,12 +975,16 @@ body {
     border-bottom: 1px solid #cbd5e1;
     margin-top: 4px;
 }
-
+/* Contact bar in main zone: horizontal inline */
 .resume-paper.layout-timeline-yellow .preview-contact-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 16px;
+    padding: 10px 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .resume-paper.layout-timeline-yellow .contact-item {
@@ -993,17 +997,6 @@ body {
     position: relative;
     border-left: 2px solid #cbd5e1;
     margin-left: 24px;
-}
-
-/* Contact bar in main zone: horizontal inline */
-.resume-paper.layout-timeline-yellow .resume-main-zone .preview-contact-bar {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px 18px;
-    padding-bottom: 14px;
-    margin-bottom: 14px;
-    border-bottom: 1px solid #e2e8f0;
 }
 
 .resume-paper.layout-timeline-yellow .resume-main-zone .preview-avatar-wrapper {
@@ -1101,6 +1094,38 @@ body {
     height: 18px;
 }
 
+.summary-text {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+/* Entry Lists (Experience, Education, Projects) */
+.preview-entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.preview-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.entry-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.entry-title {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
 /* --- Distinct Profile / About Me Callout Card --- */
 #prev-sec-summary {
     background-color: var(--accent-light, rgba(59, 130, 246, 0.06));
@@ -1142,6 +1167,21 @@ body {
 .resume-paper.layout-creative-navy #prev-sec-summary .summary-text {
     color: #cbd5e1;
     font-size: 0.82rem;
+}
+
+/* Frame Timeline summary card in main zone */
+.resume-paper.layout-timeline-yellow #prev-sec-summary {
+    background-color: transparent;
+    border-left: 3px solid var(--accent-color, #facc15);
+    padding: 10px 16px;
+    border-radius: 0;
+    margin-bottom: 16px;
+}
+
+.resume-paper.layout-timeline-yellow #prev-sec-summary .summary-text {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #475569;
 }
 
 /* --- Distinct Professional Career & Experience Section --- */
