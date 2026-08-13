@@ -828,14 +828,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (activeTemplate === 'layout-creative-navy') {
                 prevSkillsContainer.className = 'skills-progress-list';
                 const top5Tags = tags.slice(0, 5);
-                const pcts = [90, 85, 80, 75, 70];
+                const defaultPcts = [90, 85, 80, 75, 70];
                 top5Tags.forEach((tag, idx) => {
-                    const pct = pcts[idx % pcts.length];
+                    let skillName = tag;
+                    let pct = defaultPcts[idx % defaultPcts.length];
+
+                    const match = tag.match(/^(.*?)\s*\(?\s*(\d{1,3})%\s*\)?$/);
+                    if (match && match[1].trim()) {
+                        skillName = match[1].trim();
+                        pct = Math.min(100, Math.max(5, parseInt(match[2], 10)));
+                    }
+
                     const div = document.createElement('div');
                     div.className = 'skill-progress-item';
                     div.innerHTML = `
                         <div class="skill-progress-head">
-                            <span>${escapeHtml(tag)}</span>
+                            <span>${escapeHtml(skillName)}</span>
                             <span class="skill-pct-val">${pct}%</span>
                         </div>
                         <div class="skill-progress-track">
