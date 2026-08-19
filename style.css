@@ -2195,6 +2195,201 @@ body {
     width: 100px;
     cursor: pointer;
     accent-color: var(--accent-color);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    align-items: center;
+    padding: 0 48px;
+    user-select: none;
+}
+
+.ruler-ticks {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: var(--text-dark-secondary);
+    font-family: var(--font-mono, monospace);
+}
+
+/* Editable A4 Canvas Paper */
+.word-document-paper {
+    width: 210mm;
+    min-height: 297mm;
+    background-color: #ffffff;
+    color: var(--text-primary);
+    padding: 44px 50px;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 4px 4px;
+    font-family: var(--current-font);
+    line-height: 1.5;
+    box-sizing: border-box;
+    position: relative;
+    overflow: visible;
+}
+
+.word-canvas-body {
+    outline: none;
+    min-height: 240mm;
+    color: #0f172a;
+}
+
+.word-canvas-body:focus {
+    outline: none;
+}
+
+/* Profile Avatar in Word Canvas */
+.word-avatar-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-color, #1e40af);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+#wordAvatarWrap {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    z-index: 100;
+    touch-action: none;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    transition: box-shadow 0.15s ease;
+}
+
+#wordAvatarWrap:hover {
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.35);
+}
+
+#wordAvatarWrap.dragging {
+    cursor: grabbing !important;
+    box-shadow: 0 0 0 4px var(--accent-color, #1e40af), 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+    opacity: 0.9;
+}
+
+/* Content Elements inside MS Word Canvas */
+.word-canvas-body h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-color, #10b981);
+    margin-bottom: 4px;
+}
+
+.word-canvas-body h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    border-bottom: 2px solid var(--accent-color, #10b981);
+    padding-bottom: 4px;
+    margin-top: 18px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.word-canvas-body h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+.word-canvas-body p {
+    font-size: 0.88rem;
+    color: #334155;
+    margin-bottom: 8px;
+    line-height: 1.55;
+}
+
+.word-canvas-body ul,
+.word-canvas-body ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.word-canvas-body li {
+    font-size: 0.88rem;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.word-canvas-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+}
+
+.word-canvas-body th,
+.word-canvas-body td {
+    border: 1px solid #cbd5e1;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.word-canvas-body th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.word-canvas-body hr {
+    border: none;
+    height: 2px;
+    background-color: var(--accent-color, #10b981);
+    margin: 16px 0;
+}
+
+.word-canvas-body .word-badge {
+    display: inline-block;
+    background-color: var(--accent-light, #ecfdf5);
+    color: var(--accent-color, #10b981);
+    border: 1px solid var(--accent-subtle, #d1fae5);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 2px 4px 2px 0;
+}
+
+/* MS Word Status Bar */
+.word-status-bar {
+    height: 32px;
+    background-color: #161b22;
+    border-top: 1px solid var(--sidebar-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    font-size: 0.75rem;
+    color: var(--text-dark-secondary);
+    user-select: none;
+}
+
+.status-left,
+.status-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-sep {
+    color: var(--sidebar-border);
+}
+
+.status-right input[type="range"] {
+    width: 100px;
+    cursor: pointer;
+    accent-color: var(--accent-color);
 }
 
 /* ==========================================================================
@@ -2202,6 +2397,21 @@ body {
    ========================================================================== */
 
 @media (max-width: 900px) {
+    /* Use a dynamic flex body so header height doesn't overlap content */
+    html, body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden !important;
+    }
+
+    .app-header {
+        position: relative; /* Prevent sticky overlap */
+        height: auto;
+        flex-shrink: 0;
+    }
+
     /* Header Adjustments */
     .header-top-row {
         flex-wrap: wrap;
@@ -2238,6 +2448,9 @@ body {
     /* Main Container (Form Mode) */
     .app-main {
         flex-direction: column;
+        height: 100% !important; /* Override calc(100vh - 64px) */
+        flex: 1;
+        min-height: 0;
         overflow-y: auto;
     }
     .editor-sidebar {
@@ -2253,9 +2466,11 @@ body {
         overflow: visible; /* Let inner content scroll if needed */
     }
 
-    /* Prevent body scroll locking when mobile stacking */
-    .main-container {
-        overflow: visible;
+    /* Word Container (Word Mode) */
+    .word-editor-container {
+        height: 100% !important; /* Override calc(100vh - 64px) */
+        flex: 1;
+        min-height: 0;
     }
 }
 
@@ -2274,7 +2489,7 @@ body {
         font-size: 0.6rem;
         padding: 2px 4px;
     }
-
+    
     /* Wrap header buttons to prevent cutoff */
     .header-actions {
         width: 100%;
@@ -2287,17 +2502,6 @@ body {
 
     .dev-links {
         display: none; /* Hide dev links on mobile to save header space */
-    }
-    
-    /* PREVENT ENTIRE BODY FROM SCROLLING HORIZONTALLY */
-    html, body {
-        overflow-x: hidden;
-        width: 100%;
-    }
-
-    .main-container {
-        overflow-x: hidden;
-        width: 100%;
     }
     
     /* Allow internal horizontal scrolling for the A4 document */
