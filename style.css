@@ -2274,16 +2274,49 @@ body {
         font-size: 0.6rem;
         padding: 2px 4px;
     }
-    
-    /* Allow horizontal scrolling on preview containers */
-    .preview-container {
-        padding: 10px;
-        overflow-x: auto;
+
+    /* Wrap header buttons to prevent cutoff */
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 5px;
+        order: 4;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .dev-links {
+        display: none; /* Hide dev links on mobile to save header space */
     }
     
+    /* PREVENT ENTIRE BODY FROM SCROLLING HORIZONTALLY */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .main-container {
+        overflow-x: hidden;
+        width: 100%;
+    }
+    
+    /* Allow internal horizontal scrolling for the A4 document */
+    .preview-container,
     .word-workspace {
         padding: 10px;
+        overflow-x: auto !important;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
         justify-content: flex-start;
+        align-items: flex-start;
+    }
+    
+    /* Ensure the document starts at the left edge when scrolling */
+    .a4-paper-wrapper,
+    .word-page-container {
+        margin-left: 0;
+        transform-origin: top left;
     }
     
     .word-ribbon-toolbar {
@@ -2294,13 +2327,5 @@ body {
     .ribbon-row {
         flex-wrap: nowrap;
         width: max-content;
-    }
-    
-    /* Add subtle hint that document is scrollable */
-    .preview-container::after,
-    .word-workspace::after {
-        content: '';
-        display: block;
-        min-width: 10px;
     }
 }
