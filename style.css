@@ -2196,3 +2196,111 @@ body {
     cursor: pointer;
     accent-color: var(--accent-color);
 }
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================== */
+
+@media (max-width: 900px) {
+    /* Header Adjustments */
+    .header-top-row {
+        flex-wrap: wrap;
+        padding: 10px 14px;
+        gap: 10px;
+    }
+    
+    .mode-tab-group {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+        order: 3;
+        margin-top: 5px;
+    }
+
+    /* Customize Sub Bar Adjustments */
+    .customize-sub-bar {
+        padding: 15px;
+    }
+    .customization-panel {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .customization-section {
+        border-right: none;
+        border-bottom: 1px solid var(--sidebar-border);
+        padding-bottom: 15px;
+    }
+    .customization-section:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    /* Main Container (Form Mode) */
+    .app-main {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    .editor-sidebar {
+        width: 100%;
+        height: auto;
+        min-height: 50vh;
+        border-right: none;
+        border-bottom: 1px solid var(--sidebar-border);
+    }
+    .preview-container {
+        height: auto;
+        min-height: 50vh;
+        overflow: visible; /* Let inner content scroll if needed */
+    }
+
+    /* Prevent body scroll locking when mobile stacking */
+    .main-container {
+        overflow: visible;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Hide button text on very small screens, keep icons */
+    #customizeToggleBtn span,
+    #btnModeForm span,
+    #btnModeWord span {
+        display: none;
+    }
+    
+    .header-brand h1 {
+        font-size: 1.1rem;
+    }
+    .badge {
+        font-size: 0.6rem;
+        padding: 2px 4px;
+    }
+    
+    /* Allow horizontal scrolling on preview containers */
+    .preview-container {
+        padding: 10px;
+        overflow-x: auto;
+    }
+    
+    .word-workspace {
+        padding: 10px;
+        justify-content: flex-start;
+    }
+    
+    .word-ribbon-toolbar {
+        padding: 8px 10px;
+        overflow-x: auto;
+    }
+    
+    .ribbon-row {
+        flex-wrap: nowrap;
+        width: max-content;
+    }
+    
+    /* Add subtle hint that document is scrollable */
+    .preview-container::after,
+    .word-workspace::after {
+        content: '';
+        display: block;
+        min-width: 10px;
+    }
+}
