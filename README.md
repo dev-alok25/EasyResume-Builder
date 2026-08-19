@@ -5,24 +5,29 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-A lightweight, high-performance, real-time interactive **Resume & CV Builder** built with vanilla HTML5, CSS3, and JavaScript. Create ATS-friendly, professional resumes in seconds with instant live preview and one-click PDF export.
+A lightweight, high-performance, real-time interactive **Resume & CV Builder** built with vanilla HTML5, CSS3, and JavaScript. Create ATS-friendly, professional resumes in seconds with instant live preview, a freeform MS Word-style canvas editor, and robust multi-option PDF exports.
 
 ---
 
 ## ✨ Features
 
-- ⚡ **Real-Time Live Preview**: Instant split-pane rendering as you edit your information.
-- 🎨 **5 Distinct Format Templates**:
-  1. **Modern Clean**: Sleek single-column design with subtle accent borders.
-  2. **Split Two-Column**: Professional sidebar layout with optimized section spacing.
-  3. **Executive Classic**: Formal serif typography (Lora) for senior roles and academia.
-  4. **Creative Executive (Navy & Circle Photo)**: Stylish header accents, circular profile photo, and visual skill percentage progress bars.
-  5. **Yellow Frame Timeline (Banner Header & Nodes)**: High-impact dark banner header, yellow outer frame, and section node icons along a vertical timeline.
+- ⚡ **Dual Editor Modes**:
+  1. **Form Builder**: Structured inputs with instant live preview on a selected template.
+  2. **MS Word Canvas**: A freeform, content-editable A4 document canvas with a ribbon toolbar for rich text formatting, lists, tables, and alignment.
+- 🎨 **5 Distinct Format Templates** (Form Builder Mode):
+  - **Modern Clean**: Sleek single-column design with subtle accent borders.
+  - **Split Two-Column**: Professional sidebar layout with optimized section spacing.
+  - **Executive Classic**: Formal serif typography (Lora) for senior roles and academia.
+  - **Creative Executive**: Stylish header accents, circular profile photo, and visual skill percentage progress bars.
+  - **Yellow Frame Timeline**: High-impact dark banner header, yellow outer frame, and section node icons along a vertical timeline.
 - 🎨 **Color Themes & Typography**: Live color palette selector (Blue, Emerald, Indigo, Rose, Purple, Dark Charcoal) and font customization (Inter, Outfit, Lora).
-- 📷 **Profile Photo Upload**: Add custom profile picture or use template avatar placeholders.
+- 📷 **Interactive Profile Photo**: Upload a custom profile picture. In MS Word Canvas mode, freely drag and drop your avatar anywhere on the page (supports 360° all-axis movement and zoom scaling).
+- 🖨️ **Multi-Option PDF Export**: 
+  - Download the **MS Word Canvas Sheet** (Freeform layout).
+  - Download the **Form Builder Resume** (Structured template).
+  - Download **Both Sheets** (Combined Multi-Page PDF).
 - 💾 **Auto-Save & Persistence**: Automatic local storage caching ensures zero data loss.
 - 📥 **JSON Backup Import / Export**: Save and restore your resume data anytime.
-- 🖨️ **Print & PDF Optimized**: Exact print media queries `@media print` designed specifically for A4 PDF export without layout distortion.
 - 🚀 **Zero External Dependencies**: Pure vanilla web app—no build tools, node modules, or npm setups required.
 
 ---
@@ -31,10 +36,10 @@ A lightweight, high-performance, real-time interactive **Resume & CV Builder** b
 
 ```text
 resume-builder/
-├── index.html        # Main HTML structure & editor interface
+├── index.html        # Main HTML structure, Form Editor & Word Canvas UI
 ├── style.css         # Custom design system, layouts & print media queries
-├── app.js            # Reactive state management & DOM layout engine
-├── README.md         # Documentation & GitHub guide
+├── app.js            # Reactive state management, drag engine & PDF generation
+├── README.md         # Documentation
 ├── LICENSE           # MIT Open Source License
 └── .gitignore        # Git ignore directives
 ```
@@ -65,16 +70,14 @@ npx serve .
 
 1. Push your repository to GitHub:
    ```bash
-   git init
    git add .
-   git commit -m "Initial commit of EasyResume builder"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/resume-builder.git
-   git push -u origin main
+   git commit -m "Add MS Word Canvas, Draggable Photo, and Multi-Option PDF Export"
+   git push origin main
    ```
 2. Go to your repository **Settings** > **Pages**.
-3. Under **Build and deployment** > **Branch**, select `main` and root `/`.
-4. Click **Save**. Your resume builder will be live online!
+3. Under **Build and deployment** > **Source**, select **Deploy from a branch**.
+4. Under **Branch**, select `main` (or `master`) and root `/`.
+5. Click **Save**. Your resume builder will be live online!
 
 ---
 

@@ -2,21 +2,22 @@
  * EasyResume - Simple, Fast, Real-Time Resume Builder Engine
  */
 
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Initial State Definition ---
     const defaultData = {
         template: 'layout-modern',
-        themeColor: '#3b82f6',
+        themeColor: '#10b981',
         font: 'font-inter',
         personal: {
-            fullName: 'Alok',
+            fullName: 'abcd',
             jobTitle: 'Senior Full Stack Engineer',
             email: 'abcd@example.com',
             phone: '+91 1234567890',
             location: 'Lucknow',
             website: 'xyz.dev',
             linkedin: 'linkedin.com/in/abcd',
-            github: 'github.com/abcd',
+            github: 'github.com/dev-abcd',
             photo: ''
         },
         summary: 'Passionate and results-driven Senior Full Stack Engineer with 6+ years of experience crafting high-performance web applications, scalable backend APIs, and intuitive user experiences. Proven track record in leading engineering teams, optimizing site speed, and driving cloud architecture modernization.',
@@ -25,25 +26,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: 'exp-1',
                 title: 'Senior Software Engineer',
                 company: 'Apex Cloud Technologies',
-                location: 'lucknow',
-                dates: '2025 - Present',
+                location: 'delhi',
+                dates: '2022 - Present',
                 description: '• Architected and deployed microservices using Node.js, React, and GraphQL handling 5M+ daily requests.\n• Reduced page load times by 42% across core application dashboards through dynamic code-splitting and asset optimization.\n• Mentored a team of 5 junior engineers and established automated CI/CD deployment pipelines.'
             },
             {
                 id: 'exp-2',
                 title: 'Software Engineer',
                 company: 'Vanguard Digital Solutions',
-                location: 'mumbai',
-                dates: '2019 - 2025',
+                location: 'Austin, mumbai',
+                dates: '2019 - 2022',
                 description: '• Developed responsive client web apps using React, TypeScript, and Tailwind CSS.\n• Integrated Stripe payment solutions, increasing checkout conversion by 15%.\n• Designed and maintained relational Postgres database schemas with zero-downtime migrations.'
             }
         ],
         education: [
             {
                 id: 'edu-1',
-                degree: 'B.Tech. in Computer Science',
+                degree: 'B.Tech. in Computer Science engineering',
                 school: 'IIT Dholakpur',
-                location: 'Dholakpur',
+                location: 'Dholakpur India',
                 dates: '2015 - 2019',
                 description: 'President of Computer Science Student Association'
             }
@@ -104,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bindStyleControls();
         bindHeaderActions();
         bindDynamicListButtons();
+        initWordEditor();
 
         // Populate forms from state
         syncStateToForms();
@@ -411,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     saveToStorage();
                     syncPhotoPreview();
                     renderPreview();
+                    renderWordAvatar(resumeState.personal.photo);
                 };
                 reader.readAsDataURL(file);
             }
@@ -419,9 +422,12 @@ document.addEventListener('DOMContentLoaded', () => {
         removePhotoBtn.addEventListener('click', () => {
             resumeState.personal.photo = '';
             inputPhoto.value = '';
+            const inputPhotoWord = document.getElementById('input-photo-word');
+            if (inputPhotoWord) inputPhotoWord.value = '';
             saveToStorage();
             syncPhotoPreview();
             renderPreview();
+            renderWordAvatar('');
         });
     }
 
@@ -525,9 +531,19 @@ document.addEventListener('DOMContentLoaded', () => {
         clearBtn.addEventListener('click', () => {
             if (confirm('Clear all fields to start blank?')) {
                 resumeState = {
-                    themeColor: '#3b82f6',
+                    themeColor: '#10b981',
                     font: 'font-inter',
-                    personal: { fullName: '', jobTitle: '', email: '', phone: '', location: '', website: '', linkedin: '', github: '' },
+                    personal: {
+                        fullName: '',
+                        jobTitle: '',
+                        email: '',
+                        phone: '',
+                        location: '',
+                        website: '',
+                        linkedin: '',
+                        github: '',
+                        photo: ''
+                    },
                     summary: '',
                     experience: [],
                     education: [],
@@ -540,9 +556,81 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        printBtn.addEventListener('click', () => {
-            window.print();
-        });
+        // --- Download PDF Dropdown & Options Engine ---
+        const downloadDropdownWrap = document.getElementById('downloadDropdownWrap');
+        const btnDownloadWord = document.getElementById('btnDownloadWord');
+        const btnDownloadForm = document.getElementById('btnDownloadForm');
+        const btnDownloadBoth = document.getElementById('btnDownloadBoth');
+
+        function triggerCustomPrint(targetMode) {
+            document.body.classList.remove('print-target-word', 'print-target-form', 'print-target-both');
+
+            if (targetMode === 'word') {
+                document.body.classList.add('print-target-word');
+                saveWordCanvasContent();
+                updateWordStats();
+            } else if (targetMode === 'form') {
+                document.body.classList.add('print-target-form');
+                renderPreview();
+            } else if (targetMode === 'both') {
+                document.body.classList.add('print-target-both');
+                renderPreview();
+                saveWordCanvasContent();
+                updateWordStats();
+            }
+
+            if (downloadDropdownWrap) {
+                downloadDropdownWrap.classList.remove('is-open');
+                if (printBtn) printBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            const cleanupPrint = () => {
+                document.body.classList.remove('print-target-word', 'print-target-form', 'print-target-both');
+                window.removeEventListener('afterprint', cleanupPrint);
+            };
+            window.addEventListener('afterprint', cleanupPrint);
+
+            setTimeout(() => {
+                window.print();
+                setTimeout(cleanupPrint, 1000);
+            }, 60);
+        }
+
+        if (printBtn && downloadDropdownWrap) {
+            printBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = downloadDropdownWrap.classList.toggle('is-open');
+                printBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!downloadDropdownWrap.contains(e.target)) {
+                    downloadDropdownWrap.classList.remove('is-open');
+                    printBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        if (btnDownloadWord) {
+            btnDownloadWord.addEventListener('click', (e) => {
+                e.stopPropagation();
+                triggerCustomPrint('word');
+            });
+        }
+
+        if (btnDownloadForm) {
+            btnDownloadForm.addEventListener('click', (e) => {
+                e.stopPropagation();
+                triggerCustomPrint('form');
+            });
+        }
+
+        if (btnDownloadBoth) {
+            btnDownloadBoth.addEventListener('click', (e) => {
+                e.stopPropagation();
+                triggerCustomPrint('both');
+            });
+        }
 
         exportJsonBtn.addEventListener('click', () => {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(resumeState, null, 2));
@@ -672,7 +760,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mainZone.appendChild(secProj);
 
         } else if (template === 'layout-timeline-yellow') {
-            // TWO-COLUMN: Sidebar = Contact → Education → Skills
+            // TWO-COLUMN: Sidebar = Avatar → Contact → Education → Skills
             titleSummary.textContent = 'CAREER OBJECTIVE & PROFILE';
             titleSkills.textContent = 'KEY SKILLS & LANGUAGES';
             titleExp.textContent = 'PROFESSIONAL CAREER & EXPERIENCE';
@@ -687,6 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
             header.appendChild(textBlock);
 
             sidebarZone.innerHTML = '';
+            sidebarZone.appendChild(avatarWrap);
             sidebarZone.appendChild(contactBar);
             sidebarZone.appendChild(secEdu);
             sidebarZone.appendChild(secSkills);
@@ -768,22 +857,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('prev-jobTitle').innerText = p.jobTitle || 'Your Target Job Title';
 
         // Avatar Photo / Icon Placeholder
+        const currentAvatarWrap = document.getElementById('prev-avatar-wrap');
+        const currentAvatar = document.getElementById('prev-avatar');
         const defaultAvatarIcon = document.getElementById('default-avatar-icon');
         if (p.photo && p.photo.trim()) {
-            prevAvatar.src = p.photo;
-            prevAvatar.style.display = 'block';
+            if (currentAvatar) { currentAvatar.src = p.photo; currentAvatar.style.display = 'block'; }
             if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'none';
-            prevAvatarWrap.style.display = 'block';
-        } else if (activeTemplate === 'layout-creative-navy' || activeTemplate === 'layout-timeline-yellow') {
-            prevAvatar.src = '';
-            prevAvatar.style.display = 'none';
-            if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'flex';
-            prevAvatarWrap.style.display = 'block';
+            if (currentAvatarWrap) currentAvatarWrap.style.display = 'block';
         } else {
-            prevAvatar.src = '';
-            prevAvatar.style.display = 'none';
-            if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'none';
-            prevAvatarWrap.style.display = 'none';
+            if (currentAvatar) { currentAvatar.src = ''; currentAvatar.style.display = 'none'; }
+            if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'flex';
+            if (currentAvatarWrap) currentAvatarWrap.style.display = 'block';
         }
 
         // Contact Info Bar
@@ -907,15 +991,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Helper Functions ---
     function toggleContactItem(wrapId, textId, value) {
         const wrap = document.getElementById(wrapId);
         const text = document.getElementById(textId);
-        if (value && value.trim()) {
+        if (!wrap || !text) return;
+
+        const val = (value || '').trim();
+
+        if (val) {
             wrap.style.display = 'inline-flex';
-            text.innerText = value;
+            text.style.display = 'inline';
+
+            let displayVal = val;
+            if (wrapId === 'prev-website-wrap' || wrapId === 'prev-linkedin-wrap' || wrapId === 'prev-github-wrap') {
+                displayVal = val.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+            }
+            text.innerText = displayVal;
+
+            let href = '';
+            if (wrapId === 'prev-email-wrap') {
+                href = `mailto:${val}`;
+            } else if (wrapId === 'prev-phone-wrap') {
+                href = `tel:${val.replace(/\s+/g, '')}`;
+            } else {
+                // Website, LinkedIn, GitHub
+                href = val.startsWith('http://') || val.startsWith('https://') ? val : `https://${val}`;
+            }
+
+            wrap.setAttribute('href', href);
+            if (wrapId !== 'prev-email-wrap' && wrapId !== 'prev-phone-wrap') {
+                wrap.setAttribute('target', '_blank');
+                wrap.setAttribute('rel', 'noopener noreferrer');
+            } else {
+                wrap.removeAttribute('target');
+                wrap.removeAttribute('rel');
+            }
         } else {
             wrap.style.display = 'none';
+            wrap.removeAttribute('href');
         }
     }
 
@@ -927,6 +1040,482 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+    }
+
+    // --- MS WORD CANVAS EDITOR ENGINE ---
+    function initWordEditor() {
+        bindModeSwitchers();
+        bindWordRibbonActions();
+        bindWordCanvasEvents();
+        loadWordCanvasContent();
+
+        // Render avatar from saved state
+        if (resumeState.personal.photo) {
+            renderWordAvatar(resumeState.personal.photo);
+        }
+
+        // Default to MS Word Canvas mode
+        const btnModeWord = document.getElementById('btnModeWord');
+        if (btnModeWord) {
+            btnModeWord.click();
+        }
+    }
+
+    // Render/update avatar at the top of the Word canvas (draggable)
+    function renderWordAvatar(dataUrl) {
+        const paper = document.getElementById('wordDocumentPaper');
+        if (!paper) return;
+
+        let avatarWrap = document.getElementById('wordAvatarWrap');
+        if (!avatarWrap) {
+            avatarWrap = document.createElement('div');
+            avatarWrap.id = 'wordAvatarWrap';
+            avatarWrap.setAttribute('contenteditable', 'false');
+            paper.appendChild(avatarWrap);
+
+            const savedPos = resumeState.avatarPosition || null;
+            if (savedPos && typeof savedPos.x === 'number' && typeof savedPos.y === 'number') {
+                avatarWrap.style.left = savedPos.x + 'px';
+                avatarWrap.style.top = savedPos.y + 'px';
+            } else {
+                avatarWrap.style.left = '40px';
+                avatarWrap.style.top = '40px';
+            }
+
+            bindAvatarDrag(avatarWrap, paper);
+        } else {
+            const savedPos = resumeState.avatarPosition || null;
+            if (savedPos && typeof savedPos.x === 'number' && typeof savedPos.y === 'number') {
+                avatarWrap.style.left = savedPos.x + 'px';
+                avatarWrap.style.top = savedPos.y + 'px';
+            }
+        }
+
+        if (dataUrl) {
+            avatarWrap.innerHTML = `<img id="wordAvatar" src="${dataUrl}" alt="Profile Photo" class="word-avatar-img" draggable="false">`;
+            avatarWrap.style.display = 'block';
+        } else {
+            avatarWrap.style.display = 'none';
+            avatarWrap.innerHTML = '';
+        }
+    }
+
+    // Drag-and-drop for avatar using delta-based Pointer + Mouse Events
+    function bindAvatarDrag(avatarWrap, paper) {
+        let isDragging = false;
+        let startClientX = 0;
+        let startClientY = 0;
+        let startLeft = 0;
+        let startTop = 0;
+
+        function getZoomScale() {
+            const wordZoomSlider = document.getElementById('wordZoomSlider');
+            if (wordZoomSlider) {
+                const val = parseFloat(wordZoomSlider.value);
+                if (!isNaN(val) && val > 0) return val / 100;
+            }
+            return 1.0;
+        }
+
+        avatarWrap.ondragstart = () => false;
+        avatarWrap.onselectstart = () => false;
+        avatarWrap.setAttribute('draggable', 'false');
+
+        const onStart = (e) => {
+            if (e.button !== 0 && (e.pointerType === 'mouse' || e.type === 'mousedown')) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            isDragging = true;
+            avatarWrap.classList.add('dragging');
+
+            startClientX = e.clientX;
+            startClientY = e.clientY;
+            startLeft = parseFloat(avatarWrap.style.left) || 0;
+            startTop = parseFloat(avatarWrap.style.top) || 0;
+
+            if (e.pointerId !== undefined && typeof avatarWrap.setPointerCapture === 'function') {
+                try {
+                    avatarWrap.setPointerCapture(e.pointerId);
+                } catch (err) {}
+            }
+
+            window.addEventListener('pointermove', onMove, { passive: false });
+            window.addEventListener('pointerup', onEnd, { passive: false });
+            window.addEventListener('pointercancel', onEnd, { passive: false });
+            window.addEventListener('mousemove', onMove, { passive: false });
+            window.addEventListener('mouseup', onEnd, { passive: false });
+        };
+
+        const onMove = (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+
+            const scale = getZoomScale();
+            const deltaX = (e.clientX - startClientX) / scale;
+            const deltaY = (e.clientY - startClientY) / scale;
+
+            const newX = Math.round(startLeft + deltaX);
+            const newY = Math.round(startTop + deltaY);
+
+            avatarWrap.style.left = newX + 'px';
+            avatarWrap.style.top = newY + 'px';
+        };
+
+        const onEnd = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            avatarWrap.classList.remove('dragging');
+
+            if (e && e.pointerId !== undefined && typeof avatarWrap.releasePointerCapture === 'function') {
+                try {
+                    avatarWrap.releasePointerCapture(e.pointerId);
+                } catch (err) {}
+            }
+
+            window.removeEventListener('pointermove', onMove);
+            window.removeEventListener('pointerup', onEnd);
+            window.removeEventListener('pointercancel', onEnd);
+            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mouseup', onEnd);
+
+            const finalX = parseInt(avatarWrap.style.left, 10) || 0;
+            const finalY = parseInt(avatarWrap.style.top, 10) || 0;
+            resumeState.avatarPosition = { x: finalX, y: finalY };
+            saveToStorage();
+        };
+
+        avatarWrap.addEventListener('pointerdown', onStart);
+        avatarWrap.addEventListener('mousedown', onStart);
+    }
+
+    function bindModeSwitchers() {
+        const btnModeForm = document.getElementById('btnModeForm');
+        const btnModeWord = document.getElementById('btnModeWord');
+        const appMain = document.querySelector('.app-main');
+        const wordSection = document.getElementById('wordEditorSection');
+
+        if (btnModeForm && btnModeWord) {
+            btnModeForm.addEventListener('click', () => {
+                btnModeForm.classList.add('active');
+                btnModeWord.classList.remove('active');
+                document.body.classList.remove('mode-word-active');
+                if (appMain) appMain.style.display = 'flex';
+                if (wordSection) wordSection.style.display = 'none';
+            });
+
+            btnModeWord.addEventListener('click', () => {
+                btnModeWord.classList.add('active');
+                btnModeForm.classList.remove('active');
+                document.body.classList.add('mode-word-active');
+                if (appMain) appMain.style.display = 'none';
+                if (wordSection) wordSection.style.display = 'flex';
+
+                const canvas = document.getElementById('wordDocumentCanvas');
+                if (canvas && (!canvas.innerHTML || !canvas.innerHTML.trim())) {
+                    convertFormToWordCanvas();
+                }
+                updateWordStats();
+                try {
+                    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                        window.lucide.createIcons();
+                    }
+                } catch (e) {
+                    console.warn('Lucide createIcons notice:', e);
+                }
+            });
+        }
+    }
+
+    function bindWordRibbonActions() {
+        function execCmd(cmd, val = null) {
+            document.execCommand(cmd, false, val);
+            saveWordCanvasContent();
+            updateWordStats();
+        }
+
+        const cmdMap = {
+            'wordUndoBtn': () => execCmd('undo'),
+            'wordRedoBtn': () => execCmd('redo'),
+            'wordBoldBtn': () => execCmd('bold'),
+            'wordItalicBtn': () => execCmd('italic'),
+            'wordUnderlineBtn': () => execCmd('underline'),
+            'wordStrikethroughBtn': () => execCmd('strikeThrough'),
+            'wordClearFormatBtn': () => execCmd('removeFormat'),
+            'wordAlignLeft': () => execCmd('justifyLeft'),
+            'wordAlignCenter': () => execCmd('justifyCenter'),
+            'wordAlignRight': () => execCmd('justifyRight'),
+            'wordAlignJustify': () => execCmd('justifyFull'),
+            'wordBulletList': () => execCmd('insertUnorderedList'),
+            'wordNumberList': () => execCmd('insertOrderedList')
+        };
+
+        Object.keys(cmdMap).forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    cmdMap[btnId]();
+                });
+            }
+        });
+
+        const wordFontFamily = document.getElementById('wordFontFamily');
+        if (wordFontFamily) {
+            wordFontFamily.addEventListener('change', (e) => {
+                execCmd('fontName', e.target.value);
+            });
+        }
+
+        const wordFontSize = document.getElementById('wordFontSize');
+        if (wordFontSize) {
+            wordFontSize.addEventListener('change', (e) => {
+                execCmd('fontSize', e.target.value);
+            });
+        }
+
+        const wordTextColor = document.getElementById('wordTextColor');
+        if (wordTextColor) {
+            wordTextColor.addEventListener('input', (e) => {
+                execCmd('foreColor', e.target.value);
+            });
+        }
+
+        const wordBgColor = document.getElementById('wordBgColor');
+        if (wordBgColor) {
+            wordBgColor.addEventListener('input', (e) => {
+                execCmd('hiliteColor', e.target.value);
+            });
+        }
+
+        const wordInsertTable = document.getElementById('wordInsertTable');
+        if (wordInsertTable) {
+            wordInsertTable.addEventListener('click', () => {
+                const tableHtml = `
+                    <table>
+                        <thead>
+                            <tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Data Cell 1</td><td>Data Cell 2</td><td>Data Cell 3</td></tr>
+                            <tr><td>Data Cell 4</td><td>Data Cell 5</td><td>Data Cell 6</td></tr>
+                        </tbody>
+                    </table><p><br></p>
+                `;
+                execCmd('insertHTML', tableHtml);
+            });
+        }
+
+        const wordInsertHr = document.getElementById('wordInsertHr');
+        if (wordInsertHr) {
+            wordInsertHr.addEventListener('click', () => {
+                execCmd('insertHTML', '<hr><p><br></p>');
+            });
+        }
+
+        const wordInsertBadge = document.getElementById('wordInsertBadge');
+        if (wordInsertBadge) {
+            wordInsertBadge.addEventListener('click', () => {
+                execCmd('insertHTML', '<span class="word-badge">New Skill / Certification</span>&nbsp;');
+            });
+        }
+
+        const wordSyncFromFormBtn = document.getElementById('wordSyncFromFormBtn');
+        if (wordSyncFromFormBtn) {
+            wordSyncFromFormBtn.addEventListener('click', () => {
+                if (confirm('Import structured Form Builder data into MS Word canvas? Current canvas text will be replaced.')) {
+                    convertFormToWordCanvas();
+                }
+            });
+        }
+
+        const wordClearCanvasBtn = document.getElementById('wordClearCanvasBtn');
+        if (wordClearCanvasBtn) {
+            wordClearCanvasBtn.addEventListener('click', () => {
+                if (confirm('Clear the MS Word Document Canvas?')) {
+                    const canvas = document.getElementById('wordDocumentCanvas');
+                    if (canvas) {
+                        canvas.innerHTML = '<h1>Your Name</h1><p>Start typing your resume details here...</p>';
+                        saveWordCanvasContent();
+                        updateWordStats();
+                    }
+                }
+            });
+        }
+
+        const wordZoomSlider = document.getElementById('wordZoomSlider');
+        const wordZoomVal = document.getElementById('wordZoomVal');
+        const wordPageContainer = document.querySelector('.word-page-container');
+
+        if (wordZoomSlider && wordZoomVal && wordPageContainer) {
+            wordZoomSlider.addEventListener('input', (e) => {
+                const zoom = e.target.value;
+                wordZoomVal.innerText = `${zoom}%`;
+                wordPageContainer.style.transform = `scale(${zoom / 100})`;
+            });
+        }
+
+        // --- Word Ribbon: Photo Upload ---
+        const inputPhotoWord = document.getElementById('input-photo-word');
+        if (inputPhotoWord) {
+            inputPhotoWord.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const dataUrl = event.target.result;
+                        // Save to state
+                        resumeState.personal.photo = dataUrl;
+                        saveToStorage();
+                        // Update form-builder photo preview
+                        syncPhotoPreview();
+                        renderPreview();
+                        // Insert/update avatar in Word canvas
+                        renderWordAvatar(dataUrl);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+
+    function bindWordCanvasEvents() {
+        const canvas = document.getElementById('wordDocumentCanvas');
+        if (canvas) {
+            canvas.addEventListener('input', () => {
+                saveWordCanvasContent();
+                updateWordStats();
+            });
+
+            canvas.addEventListener('keyup', () => {
+                updateWordStats();
+            });
+        }
+    }
+
+    function updateWordStats() {
+        const canvas = document.getElementById('wordDocumentCanvas');
+        const wordStatusWords = document.getElementById('wordStatusWords');
+        const wordStatusChars = document.getElementById('wordStatusChars');
+
+        if (canvas) {
+            const text = canvas.innerText || '';
+            const words = text.trim().split(/\s+/).filter(Boolean).length;
+            const chars = text.length;
+
+            if (wordStatusWords) wordStatusWords.innerText = `${words} words`;
+            if (wordStatusChars) wordStatusChars.innerText = `${chars} characters`;
+        }
+    }
+
+    function saveWordCanvasContent() {
+        const canvas = document.getElementById('wordDocumentCanvas');
+        if (canvas) {
+            try {
+                localStorage.setItem('easyresume_word_html', canvas.innerHTML);
+            } catch (e) {
+                console.error('Word Canvas LocalStorage error:', e);
+            }
+        }
+    }
+
+    function loadWordCanvasContent() {
+        const canvas = document.getElementById('wordDocumentCanvas');
+        if (!canvas) return;
+
+        try {
+            const storedHtml = localStorage.getItem('easyresume_word_html');
+            if (storedHtml && storedHtml.trim()) {
+                canvas.innerHTML = storedHtml;
+            } else {
+                convertFormToWordCanvas();
+            }
+        } catch (e) {
+            convertFormToWordCanvas();
+        }
+        updateWordStats();
+    }
+
+    function convertFormToWordCanvas() {
+        const canvas = document.getElementById('wordDocumentCanvas');
+        if (!canvas) return;
+
+        const p = resumeState.personal || {};
+        const summary = resumeState.summary || '';
+        const experience = resumeState.experience || [];
+        const education = resumeState.education || [];
+        const skills = resumeState.skills || '';
+        const projects = resumeState.projects || [];
+
+        let html = `<h1>${escapeHtml(p.fullName || 'Your Full Name')}</h1>`;
+        html += `<p style="font-weight:600; color:var(--accent-color, #10b981); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">${escapeHtml(p.jobTitle || 'Target Position Title')}</p>`;
+
+        const contacts = [];
+        if (p.email) contacts.push(`📧 ${escapeHtml(p.email)}`);
+        if (p.phone) contacts.push(`📞 ${escapeHtml(p.phone)}`);
+        if (p.location) contacts.push(`📍 ${escapeHtml(p.location)}`);
+        if (p.website) contacts.push(`🌐 ${escapeHtml(p.website)}`);
+        if (p.linkedin) contacts.push(`💼 ${escapeHtml(p.linkedin)}`);
+        if (p.github) contacts.push(`💻 ${escapeHtml(p.github)}`);
+
+        if (contacts.length > 0) {
+            html += `<p style="font-size:0.82rem; color:#475569; margin-bottom:16px;">${contacts.join(' &nbsp;|&nbsp; ')}</p>`;
+        }
+
+        html += `<hr>`;
+
+        if (summary.trim()) {
+            html += `<h2>Profile Summary</h2>`;
+            html += `<p>${escapeHtml(summary)}</p>`;
+        }
+
+        if (experience.length > 0) {
+            html += `<h2>Professional Experience</h2>`;
+            experience.forEach(exp => {
+                html += `<h3>${escapeHtml(exp.title)} — <strong>${escapeHtml(exp.company)}</strong> <span style="font-size:0.8rem; font-weight:normal; color:#64748b;">(${escapeHtml(exp.dates)}${exp.location ? ' | ' + escapeHtml(exp.location) : ''})</span></h3>`;
+                if (exp.description) {
+                    const bullets = exp.description.split('\n').filter(b => b.trim());
+                    if (bullets.length > 1) {
+                        html += `<ul>`;
+                        bullets.forEach(b => {
+                            html += `<li>${escapeHtml(b.replace(/^•\s*/, ''))}</li>`;
+                        });
+                        html += `</ul>`;
+                    } else {
+                        html += `<p>${escapeHtml(exp.description)}</p>`;
+                    }
+                }
+            });
+        }
+
+        if (education.length > 0) {
+            html += `<h2>Education</h2>`;
+            education.forEach(edu => {
+                html += `<h3>${escapeHtml(edu.degree)} — <strong>${escapeHtml(edu.school)}</strong> <span style="font-size:0.8rem; font-weight:normal; color:#64748b;">(${escapeHtml(edu.dates)}${edu.location ? ' | ' + escapeHtml(edu.location) : ''})</span></h3>`;
+                if (edu.description) html += `<p>${escapeHtml(edu.description)}</p>`;
+            });
+        }
+
+        if (skills.trim()) {
+            html += `<h2>Skills & Technical Expertise</h2><p>`;
+            const skillTags = skills.split(',').map(s => s.trim()).filter(Boolean);
+            skillTags.forEach(tag => {
+                html += `<span class="word-badge">${escapeHtml(tag)}</span> `;
+            });
+            html += `</p>`;
+        }
+
+        if (projects.length > 0) {
+            html += `<h2>Projects & Certifications</h2>`;
+            projects.forEach(proj => {
+                html += `<h3>${escapeHtml(proj.title)}${proj.subtitle ? ' (' + escapeHtml(proj.subtitle) + ')' : ''} <span style="font-size:0.8rem; font-weight:normal; color:#64748b;">${proj.dates ? '| ' + escapeHtml(proj.dates) : ''}</span></h3>`;
+                if (proj.description) html += `<p>${escapeHtml(proj.description)}</p>`;
+            });
+        }
+
+        canvas.innerHTML = html;
+        saveWordCanvasContent();
+        updateWordStats();
     }
 
     // Start App
