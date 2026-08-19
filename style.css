@@ -4,24 +4,24 @@
 
 /* --- CSS Variables & Theme Tokens --- */
 :root {
-    --accent-color: #8d6e63;
-    --accent-light: #efebe9;
-    --accent-subtle: #d7ccc8;
+    --accent-color: #1e40af;
+    --accent-light: #e0e7ff;
+    --accent-subtle: #c7d2fe;
     
-    --bg-dark: #1c1514;
-    --sidebar-bg: #2d2220;
-    --sidebar-border: #3e312f;
+    --bg-dark: #0d1117;
+    --sidebar-bg: #161b22;
+    --sidebar-border: #30363d;
     
-    --text-primary: #2d2220;
-    --text-secondary: #4a3b38;
-    --text-muted: #796561;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
     
-    --text-dark-primary: #f5f2f0;
-    --text-dark-secondary: #c2b5b2;
+    --text-dark-primary: #f8fafc;
+    --text-dark-secondary: #8b949e;
     
-    --input-bg: #2d2220;
-    --input-border: #3e312f;
-    --input-focus: #8d6e63;
+    --input-bg: #0d1117;
+    --input-border: #30363d;
+    --input-focus: #1e40af;
     
     --paper-bg: #ffffff;
     --paper-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
