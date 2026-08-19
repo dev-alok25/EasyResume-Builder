@@ -79,6 +79,12 @@ npx serve .
 4. Under **Branch**, select `main` (or `master`) and root `/`.
 5. Click **Save**. Your resume builder will be live online!
 
+## 🏆 Credits / Author
+
+Designed and developed with ❤️ by **Alok Yadav**.
+- GitHub: [@dev-alok25](https://github.com/dev-alok25)
+- LinkedIn: [Alok Yadav](https://linkedin.com/in/alok-yadav-032981340)
+
 ---
 
 ## 📄 License
