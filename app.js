@@ -194,6 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
             editorPhotoPreview.style.display = 'none';
             photoPlaceholderIcon.style.display = 'block';
             removePhotoBtn.style.display = 'none';
+            if (inputPhoto) inputPhoto.value = '';
+            const inputPhotoWord = document.getElementById('input-photo-word');
+            if (inputPhotoWord) inputPhotoWord.value = '';
         }
     }
 
@@ -522,17 +525,26 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSampleBtn.addEventListener('click', () => {
             if (confirm('Load sample resume data? Current edits will be replaced.')) {
                 resumeState = JSON.parse(JSON.stringify(defaultData));
+                resumeState.avatarPosition = null;
+                if (inputPhoto) inputPhoto.value = '';
+                const inputPhotoWord = document.getElementById('input-photo-word');
+                if (inputPhotoWord) inputPhotoWord.value = '';
+                if (importJsonInput) importJsonInput.value = '';
                 saveToStorage();
                 syncStateToForms();
                 renderPreview();
+                renderWordAvatar(resumeState.personal.photo || '');
+                convertFormToWordCanvas();
             }
         });
 
         clearBtn.addEventListener('click', () => {
             if (confirm('Clear all fields to start blank?')) {
                 resumeState = {
+                    template: resumeState.template || 'layout-modern',
                     themeColor: '#10b981',
                     font: 'font-inter',
+                    density: resumeState.density || 'density-normal',
                     personal: {
                         fullName: '',
                         jobTitle: '',
@@ -548,11 +560,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     experience: [],
                     education: [],
                     skills: '',
-                    projects: []
+                    projects: [],
+                    avatarPosition: null
                 };
+                if (inputPhoto) inputPhoto.value = '';
+                const inputPhotoWord = document.getElementById('input-photo-word');
+                if (inputPhotoWord) inputPhotoWord.value = '';
+                if (importJsonInput) importJsonInput.value = '';
                 saveToStorage();
                 syncStateToForms();
                 renderPreview();
+                renderWordAvatar('');
+                convertFormToWordCanvas();
             }
         });
 
@@ -654,6 +673,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         saveToStorage();
                         syncStateToForms();
                         renderPreview();
+                        renderWordAvatar(resumeState.personal.photo || '');
+                        convertFormToWordCanvas();
                         alert('Resume data imported successfully!');
                     } else {
                         alert('Invalid JSON file format.');
@@ -661,6 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (err) {
                     alert('Error parsing JSON file.');
                 }
+                importJsonInput.value = '';
             };
             reader.readAsText(file);
         });
@@ -860,14 +882,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentAvatarWrap = document.getElementById('prev-avatar-wrap');
         const currentAvatar = document.getElementById('prev-avatar');
         const defaultAvatarIcon = document.getElementById('default-avatar-icon');
-        if (p.photo && p.photo.trim()) {
+        const hasPhoto = Boolean(p.photo && p.photo.trim());
+
+        if (hasPhoto) {
             if (currentAvatar) { currentAvatar.src = p.photo; currentAvatar.style.display = 'block'; }
             if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'none';
             if (currentAvatarWrap) currentAvatarWrap.style.display = 'block';
         } else {
             if (currentAvatar) { currentAvatar.src = ''; currentAvatar.style.display = 'none'; }
-            if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'flex';
-            if (currentAvatarWrap) currentAvatarWrap.style.display = 'block';
+            if (activeTemplate === 'layout-creative-navy' || activeTemplate === 'layout-timeline-yellow') {
+                if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'flex';
+                if (currentAvatarWrap) currentAvatarWrap.style.display = 'block';
+            } else {
+                if (defaultAvatarIcon) defaultAvatarIcon.style.display = 'none';
+                if (currentAvatarWrap) currentAvatarWrap.style.display = 'none';
+            }
         }
 
         // Contact Info Bar
@@ -1052,6 +1081,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Render avatar from saved state
         if (resumeState.personal.photo) {
             renderWordAvatar(resumeState.personal.photo);
+        } else {
+            renderWordAvatar('');
         }
 
         // Default to MS Word Canvas mode
@@ -1067,6 +1098,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!paper) return;
 
         let avatarWrap = document.getElementById('wordAvatarWrap');
+        if (!dataUrl) {
+            if (avatarWrap) {
+                avatarWrap.innerHTML = '';
+                avatarWrap.style.display = 'none';
+                avatarWrap.remove();
+            }
+            return;
+        }
+
         if (!avatarWrap) {
             avatarWrap = document.createElement('div');
             avatarWrap.id = 'wordAvatarWrap';
@@ -1091,13 +1131,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (dataUrl) {
-            avatarWrap.innerHTML = `<img id="wordAvatar" src="${dataUrl}" alt="Profile Photo" class="word-avatar-img" draggable="false">`;
-            avatarWrap.style.display = 'block';
-        } else {
-            avatarWrap.style.display = 'none';
-            avatarWrap.innerHTML = '';
-        }
+        avatarWrap.innerHTML = `<img id="wordAvatar" src="${dataUrl}" alt="Profile Photo" class="word-avatar-img" draggable="false">`;
+        avatarWrap.style.display = 'block';
     }
 
     // Drag-and-drop for avatar using delta-based Pointer + Mouse Events
@@ -1339,6 +1374,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         saveWordCanvasContent();
                         updateWordStats();
                     }
+                    resumeState.personal.photo = '';
+                    resumeState.avatarPosition = null;
+                    if (inputPhoto) inputPhoto.value = '';
+                    const inputPhotoWord = document.getElementById('input-photo-word');
+                    if (inputPhotoWord) inputPhotoWord.value = '';
+                    saveToStorage();
+                    syncPhotoPreview();
+                    renderPreview();
+                    renderWordAvatar('');
                 }
             });
         }
